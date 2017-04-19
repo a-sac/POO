@@ -36,6 +36,12 @@ public class Point2D {
     return this.y;
   }
 
+  public Point2D travelTo(double x, double y){
+    this.x = x;
+    this.y = y;
+    return this;
+  }
+
   public double distanceTo(Point2D dest){
     double xfactor = Math.pow(dest.getX(), 2) - Math.pow(this.getX(), 2); //destx² - orix²
     double yfactor = Math.pow(dest.getY(), 2) - Math.pow(this.getY(), 2); //desty² - oriy²
