@@ -1,3 +1,4 @@
+import java.lang.Math;
 
 /**
  * Write a description of class Point2D here.
@@ -7,10 +8,11 @@
  */
 
 public class Point2D {
-  private int x;
-  private int y;
+  private double x;
+  private double y;
 
-  public Point2D(int x, int y){
+  //Constructors
+  public Point2D(double x, double y){
     this.x = x;
     this.y = y;
   }
@@ -25,11 +27,18 @@ public class Point2D {
     this.y = p.getY();
   }
 
-  public int getX(){
+  //methods
+  public double getX(){
     return this.x;
   }
 
-  public int getY(){
+  public double getY(){
     return this.y;
+  }
+
+  public double distanceTo(Point2D dest){
+    double xfactor = Math.pow(dest.getX(), 2) - Math.pow(this.getX(), 2); //destx² - orix²
+    double yfactor = Math.pow(dest.getY(), 2) - Math.pow(this.getY(), 2); //desty² - oriy²
+    return Math.sqrt(xfactor + yfactor);
   }
 }
