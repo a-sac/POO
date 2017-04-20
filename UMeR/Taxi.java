@@ -36,4 +36,8 @@ public class Taxi{
   public Point2D getLocation(){
     return this.location;
   }
+
+  public Taxi clone(){
+    return new Taxi(this);
+  }
 }

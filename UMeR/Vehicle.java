@@ -11,7 +11,6 @@ public class Vehicle{
     private double factor;
     private String plate;
     private int type;
-    //to do queue e elementos dentro desta:
 
     public Vehicle(double speed, double price, double factor, String plate, int type){
       this.avgSpeed = speed;
@@ -59,6 +58,10 @@ public class Vehicle{
 
     public String getPlate(){
       return this.plate;
+    }
+
+    public Vehicle clone(){
+      return new Vehicle(this);
     }
 
 }
