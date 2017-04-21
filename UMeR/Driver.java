@@ -15,7 +15,6 @@ public class Driver{
     private double evaluation;
     private double kms;
     //to do Travel List;
-    private boolean isWorking;
 
     public Driver(Driver d){
       this.email = d.email;
@@ -23,13 +22,12 @@ public class Driver{
       this.name = d.name;
       this.address = d.address;
       this.birthday = d.birthday;
-      this.factor = d.factor;
+      this.trustFactor = d.trustFactor;
       this.evaluation = d.evaluation;
       this.kms = d.kms;
-      this.isWorking = d.isWorking;
     }
 
-    public Driver(String email, String password, String name, String address, String birthday, double factor, double evaluation, double kms, boolean isWorking){
+    public Driver(String email, String password, String name, String address, String birthday, double factor, double evaluation, double kms){
       this.email = email;
       this.password = password;
       this.name = name;
@@ -38,7 +36,6 @@ public class Driver{
       this.trustFactor = factor;
       this.evaluation = evaluation;
       this.kms = kms;
-      this.isWorking = isWorking;
     }
 
     public String getEmail(){
@@ -73,8 +70,8 @@ public class Driver{
       return this.kms;
     }
 
-    public boolean getIsWorking(){
-      return this.isWorking;
+    public void addKms(double kms){
+      this.kms += kms;
     }
 
     public Driver clone(){

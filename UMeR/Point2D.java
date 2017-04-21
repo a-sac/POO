@@ -36,6 +36,12 @@ public class Point2D {
     return this.y;
   }
 
+  public Point2D travelTo(Point2D p){
+    this.x = p.getX();
+    this.y = p.getY();
+    return this;
+  }
+
   public Point2D travelTo(double x, double y){
     this.x = x;
     this.y = y;

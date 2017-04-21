@@ -7,14 +7,12 @@ import java.util.Queue;
  */
 public class Vehicle{
     private double avgSpeed;
-    private double basePrice;
     private double factor;
     private String plate;
     private int type;
 
-    public Vehicle(double speed, double price, double factor, String plate, int type){
+    public Vehicle(double speed, double factor, String plate, int type){
       this.avgSpeed = speed;
-      this.basePrice = price;
       this.factor = factor;
       this.plate = plate;
       this.type = type;
@@ -22,7 +20,6 @@ public class Vehicle{
 
     public Vehicle(Vehicle v){
       this.avgSpeed = v.avgSpeed;
-      this.basePrice = v.basePrice;
       this.factor = v.factor;
       this.plate = v.plate;
       this.type = v.type;
@@ -46,10 +43,6 @@ public class Vehicle{
 
     public double getSpeed(){
       return this.avgSpeed;
-    }
-
-    public double getBasePrice(){
-      return this.basePrice;
     }
 
     public double getFactor(){
