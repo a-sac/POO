@@ -6,12 +6,15 @@ import java.util.Queue;
  * @version 19/04
  */
 public class Vehicle{
+
+    private int vehicleID;
     private double avgSpeed;
     private double factor;
     private String plate;
     private int type;
 
-    public Vehicle(double speed, double factor, String plate, int type){
+    public Vehicle(int id, double speed, double factor, String plate, int type){
+      this.vehicleID = id;
       this.avgSpeed = speed;
       this.factor = factor;
       this.plate = plate;
@@ -19,10 +22,15 @@ public class Vehicle{
     }
 
     public Vehicle(Vehicle v){
-      this.avgSpeed = v.avgSpeed;
-      this.factor = v.factor;
-      this.plate = v.plate;
-      this.type = v.type;
+      this.vehicleID = v.getID();
+      this.avgSpeed = v.getSpeed();
+      this.factor = v.getFactor();
+      this.plate = v.getPlate();
+      this.type = v.getType();
+    }
+
+    public int getID(){
+      return this.vehicleID;
     }
 
     public boolean isCar(){

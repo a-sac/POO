@@ -7,7 +7,6 @@
  */
 public class TaxiRide{
 
-
   private Point2D start;
   private Point2D destination;
   private Taxi taxi;
