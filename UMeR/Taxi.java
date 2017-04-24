@@ -6,6 +6,7 @@ import java.util.Queue;
  * @version 21/04
  */
 public class Taxi{
+  private int taxiID;
   private Driver driver;
   private Vehicle vehicle;
   private Client client;
@@ -16,6 +17,7 @@ public class Taxi{
   private double basePrice;
 
   public Taxi(Taxi t){
+    this.taxiID = t.getID();
     this.driver = t.getDriver();
     this.vehicle = t.getVehicle();
     this.client = t.getClient();
@@ -26,7 +28,8 @@ public class Taxi{
     this.basePrice = t.getBasePrice();
   }
 
-  public Taxi(Driver driver, Vehicle vehicle, Client client, TaxiRide trip, Point2D location, boolean occcupied, Queue<Client> q, double basePrice){
+  public Taxi(int id, Driver driver, Vehicle vehicle, Client client, TaxiRide trip, Point2D location, boolean occcupied, Queue<Client> q, double basePrice){
+    this.taxiID = id;
     this.driver = driver;
     this.vehicle = vehicle;
     this.client = client;
@@ -35,6 +38,10 @@ public class Taxi{
     this.occupied = occupied;
     this.waitingQ = q;
     this.basePrice = basePrice;
+  }
+
+  public int getID(){
+    return this.taxiID;
   }
 
   public Driver getDriver(){
