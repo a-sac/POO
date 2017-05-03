@@ -1,0 +1,8 @@
+CLIENTE: 
+		a tua prima 
+
+VEICULO:
+		taxi;)
+
+PRIORIADE:
+		alta ( trabalho para fazer)
