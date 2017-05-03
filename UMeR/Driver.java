@@ -2,60 +2,27 @@
 /**
  * Escreva a descrição da classe Driver aqui.
  *
- * @author tdaa
- * @version 20/04
+ * @author tdaa/jhbb
+ * @version 02/05
  */
-public class Driver{
-    private String email;
-    private String password;
-    private String name;
-    private String address;
-    private String birthday;
+public class Driver extends Person{
+
     private double trustFactor;
     private double evaluation;
     private double kms;
-    //to do Travel List;
 
     public Driver(Driver d){
-      this.email = d.email;
-      this.password = d.password;
-      this.name = d.name;
-      this.address = d.address;
-      this.birthday = d.birthday;
-      this.trustFactor = d.trustFactor;
-      this.evaluation = d.evaluation;
-      this.kms = d.kms;
+      super(d);
+      this.trustFactor = d.getTrustFactor();
+      this.evaluation = d.getEvaluation();
+      this.kms = d.getKms();
     }
 
     public Driver(String email, String password, String name, String address, String birthday, double factor, double evaluation, double kms){
-      this.email = email;
-      this.password = password;
-      this.name = name;
-      this.address = address;
-      this.birthday = birthday;
+      super(email, password, name, address, birthday);
       this.trustFactor = factor;
       this.evaluation = evaluation;
       this.kms = kms;
-    }
-
-    public String getEmail(){
-      return this.email;
-    }
-
-    public String getPassword(){
-      return this.password;
-    }
-
-    public String getName(){
-      return this.name;
-    }
-
-    public String getAddress(){
-      return this.address;
-    }
-
-    public String getBirthday(){
-      return this.birthday;
     }
 
     public double getTrustFactor(){
@@ -77,4 +44,5 @@ public class Driver{
     public Driver clone(){
       return new Driver(this);
     }
+
 }

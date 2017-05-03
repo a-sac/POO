@@ -3,22 +3,21 @@
  * Write a description of class TaxiRide here.
  *
  * @author jhbb
- * @version 21/04
+ * @version 02/04
  */
 public class TaxiRide{
-
   private Point2D start;
   private Point2D destination;
-  private Taxi taxi;
+  private Vehicle vehicle;
   private double distance;
   private double expectedTime;
   private double actualTime;
   private double price;
 
-  public TaxiRide(Point2D start, Point2D destination, Taxi taxi, double distance, double expectedTime, double actualTime, double price){
+  public TaxiRide(Point2D start, Point2D destination, Vehicle vehicle, double distance, double expectedTime, double actualTime, double price){
     this.start = start;
     this.destination = destination;
-    this.taxi = taxi;
+    this.vehicle = vehicle;
     this.distance = distance;
     this.expectedTime = expectedTime;
     this.actualTime = actualTime;
@@ -28,7 +27,7 @@ public class TaxiRide{
   public TaxiRide(TaxiRide tr){
     this.start = tr.getStart();
     this.destination = tr.getDestination();
-    this.taxi = tr.getTaxi();
+    this.vehicle = tr.getVehicle();
     this.distance = tr.getDistance();
     this.expectedTime = tr.getExpectedTime();
     this.actualTime = tr.getActualTime();
@@ -51,13 +50,10 @@ public class TaxiRide{
 		this.destination = destination;
 	}
 
-	public Taxi getTaxi() {
-		return this.taxi;
+	public Vehicle getVehicle() {
+		return this.vehicle;
 	}
 
-  public void setTaxi(Taxi taxi) {
-		this.taxi = taxi;
-	}
 
 	public double getDistance() {
 		return this.distance;
@@ -85,5 +81,9 @@ public class TaxiRide{
 
   public double getPrice(){
     return this.price;
+  }
+
+  public TaxiRide clone(){
+    return new TaxiRide(this);
   }
 }

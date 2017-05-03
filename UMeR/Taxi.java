@@ -1,4 +1,4 @@
-import java.util.Queue;
+import java.util.*;
 /**
  * Escreva a descrição da classe Taxi aqui.
  *
@@ -20,23 +20,31 @@ public class Taxi{
     this.taxiID = t.getID();
     this.driver = t.getDriver();
     this.vehicle = t.getVehicle();
-    this.client = t.getClient();
-    this.trip = t.getTrip();
     this.location = t.getLocation();
     this.occupied = t.isOccupied();
     this.waitingQ = t.getWaitingQ();
     this.basePrice = t.getBasePrice();
   }
 
-  public Taxi(int id, Driver driver, Vehicle vehicle, Client client, TaxiRide trip, Point2D location, boolean occcupied, Queue<Client> q, double basePrice){
+  public Taxi(int id, Driver driver, Vehicle vehicle){
+    Random coord = new Random();
+    Point2D start = new Point2D(coord.nextInt(21)-10, coord.nextInt(21)-10);
     this.taxiID = id;
     this.driver = driver;
     this.vehicle = vehicle;
-    this.client = client;
-    this.trip = trip;
+    this.location = start;
+    this.occupied = false;
+    this.waitingQ = new LinkedList<Client>();
+    this.basePrice = 0.57;
+  }
+
+  public Taxi(int id, Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice){
+    this.taxiID = id;
+    this.driver = driver;
+    this.vehicle = vehicle;
     this.location = location;
     this.occupied = occupied;
-    this.waitingQ = q;
+    this.waitingQ = new LinkedList<Client>();
     this.basePrice = basePrice;
   }
 
@@ -80,14 +88,27 @@ public class Taxi{
     return new Taxi(this);
   }
 
+  public String toString(){
+    return "-- Taxi (" + this.taxiID + ") driven by " + this.driver.toString() + " with vehicle " + this.vehicle.toString() + ". If you check if it's occupied the awnser is " + this.occupied; 
+  }
+
+  public int compareTo(Taxi t){
+    if(this.getDriver().getTrustFactor() > t.getDriver().getTrustFactor())
+      return 1;
+    if(this.getDriver().getTrustFactor() == t.getDriver().getTrustFactor())
+      return 0;
+    else return -1;
+  }
+
   public void enqueue(Client c){
-    this.waitingQ.offer(c);
+    this.waitingQ.offer(c.clone());
   }
 
   public void goToNextClient(){
     this.client = this.waitingQ.poll();
     Point2D clientLocation = new Point2D(this.client.getLocation());
     this.location.travelTo(clientLocation);
+    this.pickUpClient();
   }
 
   public void pickUpClient(){
@@ -103,7 +124,7 @@ public class Taxi{
     if(actualTime > 1.25*expectedTime) price = (this.basePrice * distance)/2;
     else price = this.basePrice * distance;
     Point2D clientDestination = new Point2D(this.client.getDestination());
-    TaxiRide newTrip = new TaxiRide(this.location, clientDestination, this, distance, expectedTime, actualTime, price);
+    TaxiRide newTrip = new TaxiRide(this.location, clientDestination, this.vehicle, distance, expectedTime, actualTime, price);
     this.trip = newTrip;
     this.drive(clientDestination, distance);
   }
@@ -111,6 +132,7 @@ public class Taxi{
   public void drive(Point2D destination, double distance){
     this.location.travelTo(destination);
     this.driver.addKms(distance);
+    this.rideEnd();
   }
 
   public void rideEnd(){
@@ -118,13 +140,16 @@ public class Taxi{
     this.clientLeaves();
   }
 
+  public void chargeClient(Client c, double price){
+    c.spendMoney(price);
+  }
+
   public void clientLeaves(){
+    this.client.addToHistory(this.driver.getEmail(), this.trip);
     this.client = null;
     this.trip = null;
     this.occupied = false;
   }
-  public void chargeClient(Client c, double price){
-    c.spendMoney(price);
-  }
+
 
 }
