@@ -1,11 +1,11 @@
 import java.util.*;
 
 /**
- * Write a description of class Person here.
- *
- * @author jhbb
- * @version 02/05
- */
+* Write a description of class Person here.
+*
+* @author jhbb
+* @version 02/05
+*/
 public abstract class Person{
 
   private String email;
@@ -13,7 +13,7 @@ public abstract class Person{
   private String name;
   private String address;
   private String birthday;
-  private Map<String, List<TaxiRide>> history;
+  private Map<Date, List<TaxiRide>> history;
 
   public Person(String email, String password, String name, String address, String birthday){
     this.email = email;
@@ -21,7 +21,7 @@ public abstract class Person{
     this.name = name;
     this.address = address;
     this.birthday = birthday;
-    this.history = new TreeMap<String, List<TaxiRide>>();
+    this.history = new TreeMap<Date, List<TaxiRide>>();
   }
 
   public Person(Person p){
@@ -53,29 +53,40 @@ public abstract class Person{
     return this.birthday;
   }
 
-  public Map<String, List<TaxiRide>> getHistory(){
-    Map<String, List<TaxiRide>> neo = new TreeMap<String, List<TaxiRide>>();
-    for(Map.Entry<String, List<TaxiRide>> entrys : neo.entrySet()){
+  public Map<Date, List<TaxiRide>> getHistory(){
+    Map<Date, List<TaxiRide>> neo = new TreeMap<Date, List<TaxiRide>>();
+    for(Map.Entry<Date, List<TaxiRide>> entrys : this.history.entrySet()){
       neo.put(entrys.getKey(), entrys.getValue());
     }
     return neo;
   }
 
-  public void addToHistory(String id, TaxiRide tr){
-    List<TaxiRide> current = this.history.get(id);
-    if(current != null){
-      current.add(tr.clone());
+  public void addToHistory(Date d, TaxiRide tr){
+    System.out.println("containsKey: " + this.history.containsKey(d));
+    if(this.history.containsKey(d)){
+      this.history.get(d).add(tr.clone());
     } else {
       List<TaxiRide> neo = new LinkedList<TaxiRide>();
       neo.add(tr.clone());
-      this.history.put(id, neo);
+      this.history.put(d, neo);
+      System.out.println("After inserting is it empty? " + this.history.size());
     }
   }
 
   public abstract Person clone();
 
   public String toString(){
-    return this.name + " and his/her email is " + this.email;
+    return this.name + " and his/her email is " + this.email + " - " + this.history.size();
   }
 
+  public void printHistory(){
+    Set<Map.Entry<Date, List<TaxiRide>>> t = this.history.entrySet();
+    System.out.println("Is the EntrySet of the history empty when we try to print it? " + this.history.size());
+    for(Map.Entry<Date, List<TaxiRide>> elem : t){
+      System.out.println("TaxiRides in " + elem.getKey().toString());
+      for(TaxiRide tr : elem.getValue()){
+        System.out.println(tr.toString());
+      }
+    }
+  }
 }

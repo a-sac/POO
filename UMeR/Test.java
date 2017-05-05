@@ -3,7 +3,7 @@
  * Write a description of class Test here.
  *
  * @author jhbb
- * @version 03/05s
+ * @version 03/05
  */
 public class Test
 {
@@ -19,6 +19,10 @@ public class Test
     Taxi testTaxi = test.getClosestTaxi();
     testClient.callTaxi(testTaxi);
     testTaxi.goToNextClient();
+    testTaxi.pickUpClient();
+    testTaxi.rideStart();
+    testTaxi.rideEnd();
     System.out.println(testClient.toString());
+    testClient.printHistory();
   }
 }

@@ -51,6 +51,15 @@ public class Point2D {
   public double distanceTo(Point2D dest){
     double xfactor = Math.pow(dest.getX(), 2) - Math.pow(this.getX(), 2); //destx² - orix²
     double yfactor = Math.pow(dest.getY(), 2) - Math.pow(this.getY(), 2); //desty² - oriy²
+    System.out.println(dest.toString());
     return Math.sqrt(xfactor + yfactor);
+  }
+
+  public Point2D clone(){
+    return new Point2D(this);
+  }
+
+  public String toString(){
+    return "x:" + this.x + " y:" + this.y;
   }
 }

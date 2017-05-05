@@ -89,7 +89,7 @@ public class Taxi{
   }
 
   public String toString(){
-    return "-- Taxi (" + this.taxiID + ") driven by " + this.driver.toString() + " with vehicle " + this.vehicle.toString() + ". If you check if it's occupied the awnser is " + this.occupied; 
+    return "-- Taxi (" + this.taxiID + ") driven by " + this.driver.toString() + " with vehicle " + this.vehicle.toString() + ". If you check if it's occupied the awnser is " + this.occupied;
   }
 
   public int compareTo(Taxi t){
@@ -101,30 +101,28 @@ public class Taxi{
   }
 
   public void enqueue(Client c){
-    this.waitingQ.offer(c.clone());
+    this.waitingQ.offer(c);
   }
 
   public void goToNextClient(){
     this.client = this.waitingQ.poll();
     Point2D clientLocation = new Point2D(this.client.getLocation());
     this.location.travelTo(clientLocation);
-    this.pickUpClient();
   }
 
   public void pickUpClient(){
     this.occupied = true;
-    this.rideStart();
   }
 
   public void rideStart(){
-    double distance = this.location.distanceTo(this.client.getLocation());
+    double distance = this.location.distanceTo(this.client.getDestination());
     double expectedTime = distance/vehicle.getSpeed();
     double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor();
     double price;
     if(actualTime > 1.25*expectedTime) price = (this.basePrice * distance)/2;
     else price = this.basePrice * distance;
     Point2D clientDestination = new Point2D(this.client.getDestination());
-    TaxiRide newTrip = new TaxiRide(this.location, clientDestination, this.vehicle, distance, expectedTime, actualTime, price);
+    TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);
     this.trip = newTrip;
     this.drive(clientDestination, distance);
   }
@@ -132,7 +130,6 @@ public class Taxi{
   public void drive(Point2D destination, double distance){
     this.location.travelTo(destination);
     this.driver.addKms(distance);
-    this.rideEnd();
   }
 
   public void rideEnd(){
@@ -145,7 +142,8 @@ public class Taxi{
   }
 
   public void clientLeaves(){
-    this.client.addToHistory(this.driver.getEmail(), this.trip);
+    System.out.println("TRIP " + this.trip.toString());
+    this.client.addToHistory(new Date(), this.trip);
     this.client = null;
     this.trip = null;
     this.occupied = false;

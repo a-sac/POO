@@ -8,15 +8,19 @@
 public class TaxiRide{
   private Point2D start;
   private Point2D destination;
+  private String driverEmail;
+  private String clientEmail;
   private Vehicle vehicle;
   private double distance;
   private double expectedTime;
   private double actualTime;
   private double price;
 
-  public TaxiRide(Point2D start, Point2D destination, Vehicle vehicle, double distance, double expectedTime, double actualTime, double price){
+  public TaxiRide(Point2D start, Point2D destination, String driverEmail, String clientEmail, Vehicle vehicle, double distance, double expectedTime, double actualTime, double price){
     this.start = start;
     this.destination = destination;
+    this.driverEmail = driverEmail;
+    this.clientEmail = clientEmail;
     this.vehicle = vehicle;
     this.distance = distance;
     this.expectedTime = expectedTime;
@@ -27,6 +31,8 @@ public class TaxiRide{
   public TaxiRide(TaxiRide tr){
     this.start = tr.getStart();
     this.destination = tr.getDestination();
+    this.driverEmail = tr.getDriverEmail();
+    this.clientEmail = tr.getClientEmail();
     this.vehicle = tr.getVehicle();
     this.distance = tr.getDistance();
     this.expectedTime = tr.getExpectedTime();
@@ -50,10 +56,17 @@ public class TaxiRide{
 		this.destination = destination;
 	}
 
+  public String getDriverEmail(){
+    return this.driverEmail;
+  }
+
+  public String getClientEmail(){
+    return this.clientEmail;
+  }
+
 	public Vehicle getVehicle() {
 		return this.vehicle;
 	}
-
 
 	public double getDistance() {
 		return this.distance;
@@ -85,5 +98,11 @@ public class TaxiRide{
 
   public TaxiRide clone(){
     return new TaxiRide(this);
+  }
+
+  public String toString(){
+    return "TaxiRide started at " + this.start.toString() + " and ended at " + this.destination.toString()
+                                  + "\n The driver was " + this.driverEmail + " and the client was "
+                                  + this.clientEmail + " the total distance was " + this.distance;
   }
 }

@@ -7,12 +7,15 @@ import java.util.*;
  */
 public class UMeR{
   private Integer idCounter;
+  private int userType; // 1 is client; 2 is driver
+  private Map<String, Client> clients;
   private Map<String, Vehicle> vehicles;
   private Map<String, Driver> drivers;
   private TreeSet<Taxi> taxis;
 
   public UMeR(){
     this.idCounter = 0;
+    this.clients = new TreeMap<String, Client>();
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
   }
@@ -27,6 +30,23 @@ public class UMeR{
 
   public Taxi getClosestTaxi(){
     return this.taxis.first();
+  }
+
+  public int getUserType(){
+    return this.userType;
+  }
+
+  public boolean login(String email, String password){
+    if(this.clients.containsKey(email)){
+      this.userType = 1;
+      return password.equals(this.clients.get(email).getPassword());
+    } else{
+      if(this.drivers.containsKey(email)){
+        this.userType = 2;
+        return password.equals(this.drivers.get(email).getPassword());
+      }
+      else return false;
+    }
   }
 
   public void startDay(){
