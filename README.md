@@ -15,7 +15,7 @@ in the terminal.
 ## Ok, I dig it. And who can I thank for this awesome project?
 Well, you can thank:
 
-[Hugo Brandão(That's me)](https://github.com/jhugobb)
+[Hugo Brandão (That's me)](https://github.com/jhugobb)
 
 [Sérgio Alves](https://github.com/a-sac)
 
