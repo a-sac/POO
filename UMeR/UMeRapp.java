@@ -570,7 +570,7 @@ public class UMeRapp implements Serializable {
 			FileInputStream file = new FileInputStream(new File("data"));
 			ObjectInputStream ios = new ObjectInputStream(file);
 			try{
-				taxiCompany = (UMeR) ios.readObject();
+				this.taxiCompany = (UMeR) ios.readObject();
 			} catch(ClassNotFoundException i){
 				System.out.println("Error while loading data.");
         		i.printStackTrace(System.out);
@@ -585,7 +585,7 @@ public class UMeRapp implements Serializable {
 	public void EndApp(){
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream ( new FileOutputStream("data"));
-			oos.writeObject(taxiCompany);
+			oos.writeObject(this.taxiCompany);
 			oos.flush();
 			oos.close();
 		} catch(IOException e) {
