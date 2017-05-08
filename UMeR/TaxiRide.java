@@ -103,6 +103,6 @@ public class TaxiRide{
   public String toString(){
     return "TaxiRide started at " + this.start.toString() + " and ended at " + this.destination.toString()
                                   + "\n The driver was " + this.driverEmail + " and the client was "
-                                  + this.clientEmail + " the total distance was " + this.distance;
+                                  + this.clientEmail + "\n the total distance was " + this.distance;
   }
 }

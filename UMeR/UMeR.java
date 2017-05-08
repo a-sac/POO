@@ -20,6 +20,35 @@ public class UMeR{
     this.drivers = new TreeMap<String, Driver>();
   }
 
+  public Map<String, Client> getClients(){
+    Map<String, Client> neo = new TreeMap<String, Client>();
+    for(Map.Entry<String, Client> entrys : this.clients.entrySet()){
+      neo.put(entrys.getKey(), entrys.getValue());
+    }
+    return neo;
+  }
+
+
+  public Map<String, Driver> getDrivers(){
+    Map<String, Driver> neo = new TreeMap<String, Driver>();
+    for(Map.Entry<String, Driver> entrys : this.drivers.entrySet()){
+      neo.put(entrys.getKey(), entrys.getValue());
+    }
+    return neo;
+  }
+
+  public Map<String, Vehicle> getVehicles(){
+    Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
+    for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
+      neo.put(entrys.getKey(), entrys.getValue());
+    }
+    return neo;
+  }
+
+  public TreeSet<Taxi> getTaxis(){
+    return this.taxis;
+  }
+
   public void addVehicle(Vehicle neo){
     this.vehicles.put(neo.getPlate(), neo);
   }
@@ -30,6 +59,39 @@ public class UMeR{
 
   public Taxi getClosestTaxi(){
     return this.taxis.first();
+  }
+
+  public Taxi getClosestCar(){
+    Iterator<Taxi> it = this.getTaxis().iterator();
+    Taxi t = null;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof Car) flag = 1;
+    }
+    return t;
+  }
+
+  public Taxi getClosestVan(){
+    Iterator<Taxi> it = this.getTaxis().iterator();
+    Taxi t = null;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof Van) flag = 1;
+    }
+    return t;
+  }
+
+  public Taxi getClosestMotorBike(){
+    Iterator<Taxi> it = this.getTaxis().iterator();
+    Taxi t = null;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof MotorBike) flag = 1;
+    }
+    return t;
   }
 
   public int getUserType(){
@@ -70,5 +132,9 @@ public class UMeR{
     }
     this.vehicles = vehicles;
     this.drivers = drivers;
+  }
+
+  public static void main(String[] args){
+    new UMeRapp().run();
   }
 }
