@@ -134,6 +134,17 @@ public class UMeR{
     this.drivers = drivers;
   }
 
+  public int getTraffic(Taxi t){
+    int trafficCounter = 0;
+    double distance;
+    for(Taxi in : taxis){
+      distance = t.getLocation().distanceTo(in.getLocation());
+      if(distance <= 3 && distance != 0)
+        trafficCounter++;
+    }
+    return trafficCounter;
+  }
+
   public static void main(String[] args){
     new UMeRapp().run();
   }

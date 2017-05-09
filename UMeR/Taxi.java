@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 /**
  * Escreva a descrição da classe Taxi aqui.
  *
@@ -114,10 +115,11 @@ public class Taxi{
     this.occupied = true;
   }
 
-  public void rideStart(){
+  public void rideStart(int trafficCounter){
+    ThreadLocalRandom weather = ThreadLocalRandom.current();
     double distance = this.location.distanceTo(this.client.getDestination());
     double expectedTime = distance/vehicle.getSpeed();
-    double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor();
+    double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
     double price;
     if(actualTime > 1.25*expectedTime) price = (this.basePrice * distance)/2;
     else price = this.basePrice * distance;
@@ -148,6 +150,5 @@ public class Taxi{
     this.trip = null;
     this.occupied = false;
   }
-
 
 }

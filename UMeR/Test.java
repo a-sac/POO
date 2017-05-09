@@ -20,7 +20,7 @@ public class Test
     testClient.callTaxi(testTaxi);
     testTaxi.goToNextClient();
     testTaxi.pickUpClient();
-    testTaxi.rideStart();
+    testTaxi.rideStart(test.getTraffic(testTaxi));
     testTaxi.rideEnd();
     System.out.println(testClient.toString());
     testClient.printHistory();

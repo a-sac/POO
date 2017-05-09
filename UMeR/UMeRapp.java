@@ -381,7 +381,7 @@ public class UMeRapp {
 		t.enqueue(this.client);
 		t.goToNextClient();
 		t.pickUpClient();
-		t.rideStart();
+		t.rideStart(taxiCompany.getTraffic(t));
 		t.rideEnd();
 	}
 
@@ -492,7 +492,7 @@ public class UMeRapp {
 		for(Taxi t2: this.taxiCompany.getTaxis()){
 			if(t2.getDriver().getEmail().equals(this.driver.getEmail())) t = t2;
 		}
-		t.rideStart();
+		t.rideStart(taxiCompany.getTraffic(t));
 	}
 
 	private void finishTaxiRide(){
