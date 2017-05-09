@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
   Stage stage;
-  Scene homeScene, loginScene, signupScene, clientRegisterScene;
+  Scene homeScene, loginScene, signupScene, clientRegisterScene, driverRegisterScene;
 
   public static void main(String[] args) {
     launch(args);
@@ -54,6 +54,9 @@ public class GUI extends Application {
 
     Button loginBtn = new Button("Log In");
     loginBtn.setPrefSize(200, 40);
+    loginBtn.setOnAction(e -> {
+      stage.setScene(loginScene);
+    });
 
     Button signupBtn = new Button("Sign Up");
     signupBtn.setPrefSize(200, 40);
@@ -61,16 +64,10 @@ public class GUI extends Application {
       stage.setScene(signupScene);
     });
 
-
     homeV.setStyle("-fx-background-color: #FFFFFF;");
     homeV.getChildren().addAll(viewLogo, loginBtn, signupBtn);
 
     homeScene = new Scene(homeV, 400, 700);
-
-    VBox loginV = new VBox(5);
-    loginV.setPadding(new Insets(10));
-    loginV.setSpacing(60);
-    loginV.setAlignment(Pos.CENTER);
 
     Button clientRegisterBtn = new Button("I'm a Client!");
     clientRegisterBtn.setPrefSize(200, 40);
@@ -79,19 +76,27 @@ public class GUI extends Application {
     });
     Button driverRegisterBtn = new Button("I'm a Driver!");
     driverRegisterBtn.setPrefSize(200, 40);
+    driverRegisterBtn.setOnAction(e -> {
+      stage.setScene(driverRegisterScene);
+    });
 
-    loginV.setStyle("-fx-background-color: #30ACA4;");
-    loginV.getChildren().addAll(clientRegisterBtn, driverRegisterBtn);
+    VBox registerV = new VBox(20);
+    registerV.setPadding(new Insets(10));
+    registerV.setSpacing(30);
+    registerV.setAlignment(Pos.CENTER);
 
-    signupScene = new Scene(loginV, 400, 700);
+    registerV.setStyle("-fx-background-color: #30ACA4;");
+    registerV.getChildren().addAll(clientRegisterBtn, driverRegisterBtn);
+
+    signupScene = new Scene(registerV, 400, 700);
 
     VBox clientRegV = new VBox(20);
     clientRegV.setPadding(new Insets(20));
     clientRegV.setSpacing(30);
     clientRegV.setAlignment(Pos.CENTER);
 
-    Label titleReg = new Label("Let's make you \n     a client!");
-    titleReg.setFont(Font.font(30));
+    Label titleClientReg = new Label("Let's make you \n     a client!");
+    titleClientReg.setFont(Font.font(30));
 
     Label name = new Label("Nome    \t");
     TextField nameTf = new TextField();
@@ -144,9 +149,31 @@ public class GUI extends Application {
     register.setPrefWidth(340);
 
     clientRegV.setStyle("-fx-background-color: #30ACA4;");
-    clientRegV.getChildren().addAll(titleReg, names, emails, passwords, confpwds, addresses, dates, register);
+    clientRegV.getChildren().addAll(titleClientReg, names, emails, passwords, confpwds, addresses, dates, register);
 
     clientRegisterScene = new Scene(clientRegV, 400, 700);
+
+    Label titleDriverReg = new Label("Let's make you \n     a driver!");
+    titleDriverReg.setFont(Font.font(30));
+
+    VBox driverRegV = new VBox(20);
+    driverRegV.setPadding(new Insets(20));
+    driverRegV.setSpacing(30);
+    driverRegV.setAlignment(Pos.CENTER);
+    driverRegV.setStyle("-fx-background-color: #30ACA4");
+    driverRegV.getChildren().addAll(titleDriverReg, names, emails, passwords, confpwds, addresses, dates, register);
+
+    driverRegisterScene = new Scene(driverRegV, 400, 700);
+
+    VBox loginV = new VBox(20);
+    loginV.setPadding(new Insets(10));
+    loginV.setSpacing(30);
+    loginV.setAlignment(Pos.CENTER);
+
+    loginV.setStyle("-fx-background-color: #E95334");
+    loginV.getChildren().addAll(emails, passwords);
+
+    loginScene = new Scene(loginV, 400, 700);
 
     stage.setTitle("UMeR");
     stage.setScene(homeScene);

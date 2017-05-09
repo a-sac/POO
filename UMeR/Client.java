@@ -10,23 +10,19 @@ public class Client extends Person{
   //instance variables
   private Point2D location;
   private Point2D destination;
-  private double balance;
+  private double spent;
   private Map<String,Driver> favoriteDrivers;
   private Map<String,Vehicle> favoriteVehicles;
   //TODO TaxiRide list
 
-  public Client(Point2D location, Point2D destination, String email, String password, String name, String address, String birthday, double balance){
+  public Client(String email, String password, String name, String address, String birthday, double spent){
     super(email, password, name, address, birthday);
-    this.location = location;
-    this.destination  = destination;
-    this.balance = balance;
+    this.spent = spent;
   }
 
   public Client(Client c){
     super(c);
-    this.location = c.getLocation();
-    this.destination = c.getDestination();
-    this.balance = c.getBalance();
+    this.spent = c.getMoneySpent();
   }
 
   public Point2D getLocation(){
@@ -37,8 +33,8 @@ public class Client extends Person{
     return this.destination;
   }
 
-  public double getBalance(){
-    return this.balance;
+  public double getMoneySpent(){
+    return this.spent;
   }
 
   public Map<String, Driver> getFavoriteDrivers(){
@@ -78,7 +74,7 @@ public class Client extends Person{
   }
 
   public void spendMoney(double value){
-    this.balance+=value;
+    this.spent+=value;
   }
 
   public void callTaxi(Taxi t){

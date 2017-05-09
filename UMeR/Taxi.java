@@ -121,7 +121,10 @@ public class Taxi{
     double expectedTime = distance/vehicle.getSpeed();
     double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
     double price;
-    if(actualTime > 1.25*expectedTime) price = (this.basePrice * distance)/2;
+    if(actualTime > 1.25*expectedTime){
+      price = (this.basePrice * distance)/2;
+      this.getDriver().addTimeLost(actualTime - expectedTime);
+    }
     else price = this.basePrice * distance;
     Point2D clientDestination = new Point2D(this.client.getDestination());
     TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);

@@ -10,12 +10,14 @@ public class Driver extends Person{
     private double trustFactor;
     private double evaluation;
     private double kms;
+    private double timeExceeded;
 
     public Driver(Driver d){
       super(d);
       this.trustFactor = d.getTrustFactor();
       this.evaluation = d.getEvaluation();
       this.kms = d.getKms();
+      this.timeExceeded = d.getTimeExceeded();
     }
 
     public Driver(String email, String password, String name, String address, String birthday, double factor, double evaluation, double kms){
@@ -39,6 +41,14 @@ public class Driver extends Person{
 
     public void addKms(double kms){
       this.kms += kms;
+    }
+
+    public double getTimeExceeded(){
+      return this.timeExceeded;
+    }
+
+    public void addTimeLost(double time){
+      this.timeExceeded+=time;
     }
 
     public Driver clone(){
