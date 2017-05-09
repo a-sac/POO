@@ -23,7 +23,11 @@ public class UMeRapp implements Serializable {
 	public void run() {
 		StartApp();
 		loadMenus();
+		try {
 		runHomeMenu();
+		} catch (NullPointerException e){
+			System.out.println("Problem loading HomeMenu");
+		}
 		EndApp();
 	}
 
@@ -88,11 +92,35 @@ public class UMeRapp implements Serializable {
 		do {
 			homeMenu.executa();
 			switch(homeMenu.getOpcao()) {
-				case 1: login();
-				case 2: signUp();
-				case 3: availableTaxis(); break;
-				case 4: showAllTaxis(); break;
-				case 5: admin();
+				case 1: try { 
+					login();
+					break;
+				} catch (NullPointerException e){
+				System.out.println("There was a problem during the last request.  Could not login \n");
+				}
+				case 2: try { 
+					signUp();
+					break;
+				} catch (NullPointerException e){
+				System.out.println("There was a problem during the last request. Could not sign up \n");
+				}
+				case 3: try { 
+					availableTaxis();
+					break;
+				} catch (NullPointerException e){
+				System.out.println("There was a problem during the last request. There are no available taxis \n");
+				}
+				case 4: try {
+					showAllTaxis();
+					break;
+				} catch (NullPointerException e){
+				System.out.println("There was a problem during the last request. There are no taxis \n");
+				}
+				case 5: try {
+					admin();
+				} catch (NullPointerException e){
+				System.out.println("There was a problem during the last request. You are not an admin \n");
+				}
 			}
 		} while(homeMenu.getOpcao() != 0);
 	}
@@ -146,9 +174,13 @@ public class UMeRapp implements Serializable {
 		Scanner input = new Scanner(System.in);
 
 		signUpMenu.executa();
+		try{
 		if (signUpMenu.getOpcao() == 0) {
 			System.out.println("Registo cancelado");
 			return;
+		}
+		} catch (NullPointerException e){
+			System.out.println("Sign up was not successfull");
 		}
 
 		System.out.print("Email: ");
@@ -192,7 +224,11 @@ public class UMeRapp implements Serializable {
 		System.out.print("Password: ");
 		password = input.nextLine();
 		try{
+			try{
 			taxiCompany.login(email, password);
+			} catch (NullPointerException e){
+				System.out.println("Problem on login");
+			}
 			switch (taxiCompany.getUserType()) {
 				case 1: saveClientData(email);
 								runClientMenu();
@@ -212,15 +248,23 @@ public class UMeRapp implements Serializable {
 	}
 
 	private void saveClientData(String email){
+		try{
 		Client c = this.taxiCompany.getClients().get(email);
 		this.client = c;
 		this.userType = 1;
+		} catch (NoClientsException e){
+			System.out.println("Could not access all clients");
+		}
 	}
 
 	private void saveDriverData(String email){
+		try{
 		Driver d = this.taxiCompany.getDrivers().get(email);
 		this.driver = d;
 		this.userType = 2;
+		}catch (NoDriversException e){
+			System.out.println("Could not access all drivers");
+		}
 	}
 
 	private void availableTaxis(){
@@ -359,7 +403,8 @@ public class UMeRapp implements Serializable {
 
 	private String writeEmail(){
 		Scanner read = new Scanner(System.in);
-		String email;
+		String email =null;
+		try {
 		do{
 			System.out.print("Escolha o e-mail do motorista pretendido: ");
 			email = read.nextLine();
@@ -367,6 +412,9 @@ public class UMeRapp implements Serializable {
 				System.out.print("E-mail inválido. Tente outra vez!");
 			}
 		}while(this.taxiCompany.getDrivers().containsKey(email) == false);
+		} catch (NoDriversException e){
+			System.out.println("Problem accessing drivers");
+		}
 		return email;
 	}
 
@@ -384,8 +432,12 @@ public class UMeRapp implements Serializable {
 	}
 
 	private void printDrivers(){
+		try{
 		for (String email: this.taxiCompany.getDrivers().keySet()){
 				System.out.println(email);
+		}
+		} catch(NoDriversException e){
+			System.out.println("Problem accessing drivers");
 		}
 	}
 
@@ -416,8 +468,12 @@ public class UMeRapp implements Serializable {
 
 	private void addFavoriteDriver(){
 		String email = writeEmail();
+		try{
 		Driver d = this.taxiCompany.getDrivers().get(email);
 		this.client.getFavoriteDrivers().put(d.getEmail(), d);
+		} catch (NoDriversException e){
+			System.out.println("Problem accessing drivers");
+		}
 	}
 
 	private void addFavoriteVehicle(){
@@ -492,7 +548,7 @@ public class UMeRapp implements Serializable {
 			this.taxiCompany.addVehicle(c);
 		}
 		catch(VehicleExistsException e){
-			System.out.println(e.getMessage());
+			System.out.println("Problem while adding vehicle");
 		}
 	}
 
@@ -501,7 +557,7 @@ public class UMeRapp implements Serializable {
 			this.taxiCompany.addVehicle(v);
 		}
 		catch(VehicleExistsException e){
-			System.out.println(e.getMessage());
+			System.out.println("Problem while adding vehicle");
 		}
 	}
 
@@ -510,7 +566,7 @@ public class UMeRapp implements Serializable {
 			this.taxiCompany.addVehicle(m);
 		}
 		catch(VehicleExistsException e){
-			System.out.println(e.getMessage());
+			System.out.println("Problem while adding vehicle");
 		}
 	}
 
@@ -596,7 +652,7 @@ public class UMeRapp implements Serializable {
 				System.out.println(top.pollLast().toString());
 			}
 		}
-		catch(NoClientsException e){System.out.println(e.getMessage());}
+		catch(NoClientsException e){System.out.println("Problem while accessing all clients");}
 	}
 
 	private void worst5Drivers(){
@@ -610,7 +666,7 @@ public class UMeRapp implements Serializable {
 				System.out.println(top.pollLast().toString());
 			}
 		}
-		catch(NoDriversException e){System.out.println(e.getMessage());}
+		catch(NoDriversException e){System.out.println("Problem accessing drivers");}
 	}
 
 	public void StartApp(){
