@@ -4,8 +4,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.File;
+import java.io.Serializable;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-public class UMeRapp {
+public class UMeRapp implements Serializable {
 
 	private UMeR taxiCompany;
 	private Client client;
@@ -14,10 +21,10 @@ public class UMeRapp {
 	private Menu homeMenu, clientMenu, driverMenu, signUpMenu, vehicleMenu, callingTaxiMenu, favoriteMenu, signUpVehicleMenu;
 
 	public void run() {
-		//load estado parser
+		StartApp();
 		loadMenus();
 		runHomeMenu();
-		//gravar estado parser
+		EndApp();
 	}
 
 	public UMeRapp(){}
@@ -557,4 +564,34 @@ public class UMeRapp {
 		input.close();
 		return res;
 	}
+
+	public void StartApp(){
+		try {
+			FileInputStream file = new FileInputStream(new File("data"));
+			ObjectInputStream ios = new ObjectInputStream(file);
+			try{
+				this.taxiCompany = (UMeR) ios.readObject();
+			} catch(ClassNotFoundException i){
+				System.out.println("Error while loading data.");
+        		i.printStackTrace(System.out);
+			}
+			ios.close();
+		} catch(IOException e) {
+			System.out.println("Error while loading data.");
+        	e.printStackTrace(System.out);
+		}
+    }
+
+	public void EndApp(){
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream ( new FileOutputStream("data"));
+			oos.writeObject(this.taxiCompany);
+			oos.flush();
+			oos.close();
+		} catch(IOException e) {
+			System.out.println("Error while saving data.");
+        	e.printStackTrace(System.out);
+		}
+    }
+
 }
