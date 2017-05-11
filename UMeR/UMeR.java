@@ -44,14 +44,11 @@ public class UMeR{
   }
 
   public Map<String, Vehicle> getVehicles() throws NoDriversException{
-    if(this.vehicles.isEmpty()) throw new NoVehiclesException("No vehicles in database");
-    else{
-      Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
-      for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
+    Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
+    for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
         neo.put(entrys.getKey(), entrys.getValue());
-      }
-    return neo;
     }
+    return neo;
   }
 
   public TreeSet<Taxi> getTaxis(){
