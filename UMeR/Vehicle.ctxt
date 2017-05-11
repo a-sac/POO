@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=speed\ price\ factor\ plate
+comment0.target=Vehicle(double,\ double,\ int,\ java.lang.String)
+comment1.params=v
+comment1.target=Vehicle(Vehicle)
+comment2.params=
+comment2.target=double\ getSpeed()
+comment3.params=
+comment3.target=double\ getPrice()
+comment4.params=
+comment4.target=int\ getFactor()
+comment5.params=
+comment5.target=java.lang.String\ getPlate()
+numComments=6

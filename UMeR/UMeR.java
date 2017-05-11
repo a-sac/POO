@@ -43,17 +43,26 @@ public class UMeR{
     }
   }
 
-  public Map<String, Vehicle> getVehicles(){
-    Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
-    for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
-      neo.put(entrys.getKey(), entrys.getValue());
-    }
+  public Map<String, Vehicle> getVehicles() throws NoDriversException{
+    if(this.vehicles.isEmpty()) throw new NoVehiclesException("No vehicles in database");
+    else{
+      Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
+      for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
+        neo.put(entrys.getKey(), entrys.getValue());
+      }
     return neo;
+    }
   }
 
   public TreeSet<Taxi> getTaxis(){
     return this.taxis;
   }
+
+  public void addClient(Client neo) throws UserExistsException{
+    if(this.clients.containsKey(neo.getEmail())) throw new UserExistsException("User alredy exists");
+    this.clients.put(neo.getEmail(), neo);
+  }
+
 
   public void addVehicle(Vehicle neo) throws VehicleExistsException{
     if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Vehicles alredy exists");
@@ -109,11 +118,11 @@ public class UMeR{
   public void login(String email, String password) throws UserDoesNotExistsException{
     if(this.clients.containsKey(email) != false){
       this.userType = 1;
-      if(!password.equals(this.clients.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorrect");
+      if(!password.equals(this.clients.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorresta");
     } else{
       if(this.drivers.containsKey(email) != false){
         this.userType = 2;
-        if(!password.equals(this.drivers.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorrect");
+        if(!password.equals(this.drivers.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorreta");
       }
       else throw new UserDoesNotExistsException("User not found");
     }
