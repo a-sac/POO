@@ -48,7 +48,6 @@ public class UMeRapp implements Serializable {
 		"Mostrar todos os Táxis",
 		"Pedir Táxi",
 		"Mostrar histórico de viagens",
-		"Adicionar táxi aos favoritos",
 		"Obter lista de favoritos",
 		"Fechar sessão"};
 
