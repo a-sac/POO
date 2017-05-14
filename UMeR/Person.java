@@ -62,28 +62,26 @@ public abstract class Person{
   }
 
   public void addToHistory(Date d, TaxiRide tr){
-    System.out.println("containsKey: " + this.history.containsKey(d));
     if(this.history.containsKey(d)){
       this.history.get(d).add(tr.clone());
     } else {
       List<TaxiRide> neo = new LinkedList<TaxiRide>();
       neo.add(tr.clone());
       this.history.put(d, neo);
-      System.out.println("After inserting is it empty? " + this.history.size());
     }
   }
 
   public abstract Person clone();
 
   public String toString(){
-    return this.name + " and his/her email is " + this.email + " - " + this.history.size();
+    return this.name + ". O email é " + this.email;
   }
 
   public void printHistory(){
     Set<Map.Entry<Date, List<TaxiRide>>> t = this.history.entrySet();
-    System.out.println("Is the EntrySet of the history empty when we try to print it? " + this.history.size());
+    System.out.println("Histórico: " + this.history.size());
     for(Map.Entry<Date, List<TaxiRide>> elem : t){
-      System.out.println("TaxiRides in " + elem.getKey().toString());
+      System.out.println("Viagens em " + elem.getKey().toString());
       for(TaxiRide tr : elem.getValue()){
         System.out.println(tr.toString());
       }

@@ -7,7 +7,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * @version 21/04
  */
 public class Taxi{
-  private int taxiID;
   private Driver driver;
   private Vehicle vehicle;
   private Client client;
@@ -18,7 +17,6 @@ public class Taxi{
   private double basePrice;
 
   public Taxi(Taxi t){
-    this.taxiID = t.getID();
     this.driver = t.getDriver();
     this.vehicle = t.getVehicle();
     this.location = t.getLocation();
@@ -27,10 +25,9 @@ public class Taxi{
     this.basePrice = t.getBasePrice();
   }
 
-  public Taxi(int id, Driver driver, Vehicle vehicle){
+  public Taxi(Driver driver, Vehicle vehicle){
     Random coord = new Random();
     Point2D start = new Point2D(coord.nextInt(21)-10, coord.nextInt(21)-10);
-    this.taxiID = id;
     this.driver = driver;
     this.vehicle = vehicle;
     this.location = start;
@@ -39,18 +36,13 @@ public class Taxi{
     this.basePrice = 0.57;
   }
 
-  public Taxi(int id, Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice){
-    this.taxiID = id;
+  public Taxi(Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice){
     this.driver = driver;
     this.vehicle = vehicle;
     this.location = location;
     this.occupied = occupied;
     this.waitingQ = new LinkedList<Client>();
     this.basePrice = basePrice;
-  }
-
-  public int getID(){
-    return this.taxiID;
   }
 
   public Driver getDriver(){
@@ -90,7 +82,7 @@ public class Taxi{
   }
 
   public String toString(){
-    return "-- Taxi (" + this.taxiID + ") driven by " + this.driver.toString() + " with vehicle " + this.vehicle.toString() + ". If you check if it's occupied the awnser is " + this.occupied;
+    return "-- Taxi (" + this.vehicle.getPlate() + ") conduzido por " + this.driver.toString() + ". com o veículo " + this.vehicle.toString() + ".\nLocalização: " + this.location.toString() + "\n Ocupado? " + this.occupiedToString();
   }
 
   public int compareTo(Taxi t){
@@ -102,7 +94,7 @@ public class Taxi{
   }
 
   public void enqueue(Client c){
-    this.waitingQ.offer(c);
+    this.waitingQ.add(c);
   }
 
   public void goToNextClient(){
@@ -117,19 +109,22 @@ public class Taxi{
 
   public void rideStart(int trafficCounter){
     ThreadLocalRandom weather = ThreadLocalRandom.current();
-    double distance = this.location.distanceTo(this.client.getDestination());
-    double expectedTime = distance/vehicle.getSpeed();
-    double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
-    double price;
-    if(actualTime > 1.25*expectedTime){
-      price = (this.basePrice * distance)/2;
-      this.getDriver().addTimeLost(actualTime - expectedTime);
+    if(this.client!=null){
+      double distance = this.location.distanceTo(this.client.getDestination());
+      double expectedTime = distance/vehicle.getSpeed();
+      double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
+      double price;
+      if(actualTime > 1.25*expectedTime){
+        price = (this.basePrice * distance)/2;
+        this.getDriver().addTimeLost(actualTime - expectedTime);
+      }
+      else price = this.basePrice * distance;
+      Point2D clientDestination = new Point2D(this.client.getDestination());
+      TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);
+      this.trip = newTrip;
+      this.drive(clientDestination, distance);
     }
-    else price = this.basePrice * distance;
-    Point2D clientDestination = new Point2D(this.client.getDestination());
-    TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);
-    this.trip = newTrip;
-    this.drive(clientDestination, distance);
+    else System.out.println("Sem Cliente");
   }
 
   public void drive(Point2D destination, double distance){
@@ -138,8 +133,11 @@ public class Taxi{
   }
 
   public void rideEnd(){
-    this.chargeClient(this.client, this.trip.getPrice());
-    this.clientLeaves();
+    if(this.client!=null){
+      this.chargeClient(this.client, this.trip.getPrice());
+      this.clientLeaves();
+    }
+    else System.out.println("Sem Cliente");
   }
 
   public void chargeClient(Client c, double price){
@@ -147,11 +145,17 @@ public class Taxi{
   }
 
   public void clientLeaves(){
-    System.out.println("TRIP " + this.trip.toString());
+    System.out.println(this.trip.toString());
     this.client.addToHistory(new Date(), this.trip);
     this.client = null;
     this.trip = null;
     this.occupied = false;
   }
 
+  public String occupiedToString(){
+    String occupied;
+    if(this.occupied==true) occupied = "Sim";
+    else occupied = "Não";
+    return occupied;
+  }
 }

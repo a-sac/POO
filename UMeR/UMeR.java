@@ -6,18 +6,46 @@ import java.util.*;
  * @version 02/05
  */
 public class UMeR{
-  private Integer idCounter;
   private int userType; // 1 is client; 2 is driver
-  private Map<String, Client> clients;
-  private Map<String, Vehicle> vehicles;
-  private Map<String, Driver> drivers;
+  private int nVehicles;
+  private int nDrivers;
+  private TreeMap<String, Client> clients;
+  private TreeMap<String, Vehicle> vehicles;//vehicles with no driver
+  private TreeMap<String, Driver> drivers;//drivers with no
   private TreeSet<Taxi> taxis;
+  private static int driverCode = 611;
 
   public UMeR(){
-    this.idCounter = 0;
     this.clients = new TreeMap<String, Client>();
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
+    this.taxis = new TreeSet<Taxi>(new TaxiComparator());
+    this.nVehicles = this.vehicles.size();
+    this.nDrivers = this.drivers.size();
+  }
+
+  public int getUserType(){
+    return this.userType;
+  }
+
+  public int getNVehicles(){
+    return this.nVehicles;
+  }
+
+  public int getNDrivers(){
+    return this.nDrivers;
+  }
+
+  public int getDriverCode(){
+    return this.driverCode;
+  }
+
+  public void setNVehicles(int nvehicles){
+    this.nVehicles = nvehicles;
+  }
+
+  public void setNDrivers(int ndrivers){
+    this.nDrivers = ndrivers;
   }
 
   public Map<String, Client> getClients() throws NoClientsException{
@@ -31,7 +59,6 @@ public class UMeR{
     }
   }
 
-
   public Map<String, Driver> getDrivers() throws NoDriversException{
     if(this.drivers.isEmpty()) throw new NoDriversException("No drivers in database");
     else{
@@ -43,76 +70,222 @@ public class UMeR{
     }
   }
 
-  public Map<String, Vehicle> getVehicles() throws NoDriversException{
-    Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
-    for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
+  public Map<String, Vehicle> getVehicles() throws NoVehiclesException{
+    if(this.vehicles.isEmpty()) throw new NoVehiclesException("No vehicles in database");
+    else{
+      Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
+      for(Map.Entry<String, Vehicle> entrys : this.vehicles.entrySet()){
         neo.put(entrys.getKey(), entrys.getValue());
-    }
+      }
     return neo;
+    }
   }
 
-  public TreeSet<Taxi> getTaxis(){
+  public TreeSet<Taxi> getTaxis() throws NoTaxisException{
+    if(this.taxis.isEmpty()) throw new NoTaxisException("Sem taxis");
     return this.taxis;
   }
 
   public void addClient(Client neo) throws UserExistsException{
-    if(this.clients.containsKey(neo.getEmail())) throw new UserExistsException("User alredy exists");
+    if(this.clients.containsKey(neo.getEmail())) throw new UserExistsException("Cliente já existente");
     this.clients.put(neo.getEmail(), neo);
   }
 
 
   public void addVehicle(Vehicle neo) throws VehicleExistsException{
-    if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Vehicles alredy exists");
+    if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Veículo já existente");
     this.vehicles.put(neo.getPlate(), neo);
   }
 
   public void addDriver(Driver neo) throws UserExistsException{
-    if(this.drivers.containsKey(neo.getEmail())) throw new UserExistsException("User alredy exists");
+    if(this.drivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
     this.drivers.put(neo.getEmail(), neo);
   }
 
-  public Taxi getClosestTaxi(){
-    return this.taxis.first();
+  public void addTaxi(Driver d, Vehicle v){
+    this.taxis.add(new Taxi(d, v));
   }
 
-  public Taxi getClosestCar(){
-    Iterator<Taxi> it = this.getTaxis().iterator();
+  public Taxi getClosestTaxi(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
     Taxi t = null;
+    double distance=0.0 , tmp=0.0;
     int flag=0;
-    while(it.hasNext() && flag==0){
+    if(it.hasNext()){
       t = it.next();
-      if(t.getVehicle() instanceof Car) flag = 1;
+      distance = t.getLocation().distanceTo(c.getLocation());
+    }
+    while(it.hasNext()){
+      t = it.next();
+      tmp = t.getLocation().distanceTo(c.getLocation());
+      if(distance > tmp) distance = tmp;
     }
     return t;
   }
 
-  public Taxi getClosestVan(){
-    Iterator<Taxi> it = this.getTaxis().iterator();
+  public Taxi getClosestFreeTaxi(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
     Taxi t = null;
+    double distance=0.0 , tmp=0.0;
     int flag=0;
     while(it.hasNext() && flag==0){
       t = it.next();
-      if(t.getVehicle() instanceof Van) flag = 1;
+      if(t.isOccupied()==false){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.isOccupied()==false){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
     }
     return t;
   }
 
-  public Taxi getClosestMotorBike(){
-    Iterator<Taxi> it = this.getTaxis().iterator();
+  public Taxi getClosestCar(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
     Taxi t = null;
+    double distance=0.0 , tmp=0.0;
     int flag=0;
     while(it.hasNext() && flag==0){
       t = it.next();
-      if(t.getVehicle() instanceof MotorBike) flag = 1;
+      if(t.getVehicle() instanceof Car){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof Car){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
     }
     return t;
   }
 
-  public int getUserType(){
-    return this.userType;
+  public Taxi getClosestFreeCar(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t = null;
+    double distance=0.0 , tmp=0.0;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof Car && t.isOccupied()==false){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof Car && t.isOccupied()==false){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
+    }
+    return t;
+  }
+
+  public Taxi getClosestVan(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t = null;
+    double distance=0.0 , tmp=0.0;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof Van){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof Van){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
+    }
+    return t;
+  }
+
+  public Taxi getClosestFreeVan(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t = null;
+    double distance=0.0 , tmp=0.0;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof Van && t.isOccupied()==false){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof Van && t.isOccupied()==false){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
+    }
+    return t;
+  }
+
+  public Taxi getClosestMotorBike(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t = null;
+    double distance=0.0 , tmp=0.0;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof MotorBike){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof MotorBike){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
+    }
+    return t;
+  }
+
+  public Taxi getClosestFreeMotorBike(Client c){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t = null;
+    double distance=0.0 , tmp=0.0;
+    int flag=0;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getVehicle() instanceof MotorBike && t.isOccupied()==false){
+        flag=1;
+        distance = t.getLocation().distanceTo(c.getLocation());
+      }
+    }
+    if(it==null) return null;
+    while(it.hasNext()){
+      t = it.next();
+      if(t.getVehicle() instanceof MotorBike && t.isOccupied()==false){
+        tmp = t.getLocation().distanceTo(c.getLocation());
+        if(distance > tmp) distance = tmp;
+      }
+    }
+    return t;
   }
 
   public void login(String email, String password) throws UserDoesNotExistsException{
+    System.out.println(this.drivers.containsKey(email));
     if(this.clients.containsKey(email) != false){
       this.userType = 1;
       if(!password.equals(this.clients.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorresta");
@@ -121,31 +294,33 @@ public class UMeR{
         this.userType = 2;
         if(!password.equals(this.drivers.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorreta");
       }
-      else throw new UserDoesNotExistsException("User not found");
+      else throw new UserDoesNotExistsException("Utilizador não encontrado");
     }
   }
 
-  public void startDay(){
+  public Taxi startDay(Driver d){
     this.taxis = new TreeSet<Taxi>(new TaxiComparator());
-    Iterator<Vehicle> v = this.vehicles.values().iterator();
-    Iterator<Driver> d = this.drivers.values().iterator();
-    while(d.hasNext() && v.hasNext()){
-      this.taxis.add(new Taxi(this.idCounter, d.next(), v.next()));
-      d.remove();
-      v.remove();
-    }
+    Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
+    this.taxis.add(t);
+    this.vehicles.remove(this.vehicles.firstKey());
+    this.drivers.remove(d.getEmail());
+    System.out.println("Tenha um bom dia de trabalho " + d.getName());
+    return t;
   }
 
-  public void endDay(){
-    Iterator<Taxi> t = this.taxis.iterator();
-    Map<String, Vehicle> vehicles = new TreeMap<String, Vehicle>();    Map<String, Driver> drivers = new TreeMap<String, Driver>();
-    while(t.hasNext()){
-      drivers.put(t.next().getDriver().getEmail(), t.next().getDriver());
-      vehicles.put(t.next().getVehicle().getPlate(), t.next().getVehicle());
-      t.remove();
+  public void endDay(Driver d){
+    int flag=0;
+    Taxi t = null;
+    Iterator<Taxi> it = this.taxis.iterator();
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getDriver().getEmail().equals(d.getEmail())){
+        this.drivers.put(d.getEmail(), d);
+        this.vehicles.put(t.getVehicle().getPlate(), t.getVehicle().clone());
+        this.taxis.remove(t);
+        flag=1;
+      }
     }
-    this.vehicles = vehicles;
-    this.drivers = drivers;
   }
 
   public int getTraffic(Taxi t){

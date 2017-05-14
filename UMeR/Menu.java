@@ -1,8 +1,8 @@
 
 /**
  * Esta classe implementa um menu em modo texto.
- * 
- * @author Josá Creissac Campos 
+ *
+ * @author Josá Creissac Campos
  * @version v2.1 (20170504)
  */
 import java.util.List;
@@ -15,7 +15,7 @@ public class Menu {
     // variáveis de instância
     private List<String> opcoes;
     private int op;
-    
+
     /**
      * Constructor for objects of class Menu
      */
@@ -26,7 +26,7 @@ public class Menu {
 
     /**
      * Método para apresentar o menu e ler uma opção.
-     * 
+     *
      */
     public void executa() {
         do {
@@ -34,7 +34,7 @@ public class Menu {
             this.op = lerOpcao();
         } while (this.op == -1);
     }
-    
+
     /** Apresentar o menu */
     private void showMenu() {
         System.out.println("\n *** Menu *** ");
@@ -45,12 +45,12 @@ public class Menu {
         }
         System.out.println("0 - Sair");
     }
-    
+
     /** Ler uma opção válida */
     private int lerOpcao() {
-        int op; 
+        int op;
         Scanner is = new Scanner(System.in);
-        
+
         System.out.print("Opção: ");
         try {
             op = is.nextInt();
@@ -64,7 +64,7 @@ public class Menu {
         }
         return op;
     }
-    
+
     /**
      * Método para obter a última opção lida
      */
