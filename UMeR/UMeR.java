@@ -29,11 +29,11 @@ public class UMeR{
   }
 
   public int getNVehicles(){
-    return this.nVehicles;
+    return this.vehicles.size();
   }
 
   public int getNDrivers(){
-    return this.nDrivers;
+    return this.drivers.size();
   }
 
   public int getDriverCode(){
@@ -284,8 +284,39 @@ public class UMeR{
     return t;
   }
 
+  public boolean printDrivers(){
+    boolean bool=false;
+    if(this.taxis.isEmpty()==false){
+      bool = true;
+      for (Taxi t: this.taxis){
+			 System.out.println(t.getDriver().getEmail());
+		  }
+    }
+    return bool;
+	}
+
+  public String writeEmail(){
+    Scanner read = new Scanner(System.in);
+    String email=null, actual=null;
+    if(this.taxis.isEmpty()==false){
+      Iterator<Taxi> it = this.taxis.iterator();
+      Taxi t;
+      int flag=0;
+      do{
+        System.out.print("Escolha o e-mail do motorista pretendido: ");
+        email = read.nextLine();
+        while(it.hasNext() && flag==0){
+          t = it.next();
+          actual = t.getDriver().getEmail();
+          if(actual.equals(email)==false) System.out.println("E-mail inválido. Tente outra vez!");
+          else flag=1;
+        }
+      }while(email.equals(actual)==false);
+    }
+    return email;
+  }
+
   public void login(String email, String password) throws UserDoesNotExistsException{
-    System.out.println(this.drivers.containsKey(email));
     if(this.clients.containsKey(email) != false){
       this.userType = 1;
       if(!password.equals(this.clients.get(email).getPassword())) throw new UserDoesNotExistsException("Password incorresta");

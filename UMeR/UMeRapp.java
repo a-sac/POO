@@ -168,8 +168,8 @@ public class UMeRapp implements Serializable {
 			driverMenu.executa();
 			switch(driverMenu.getOpcao()) {
 				case 1:	Taxi t = startWork();
-				runDriverSubMenu(t.clone());
-				break;
+								runDriverSubMenu(t.clone());
+								break;
 				case 2: showHistory(); break;
 				case 3: logout(); break;
 			}
@@ -177,15 +177,19 @@ public class UMeRapp implements Serializable {
 	}
 
 	private void runDriverSubMenu(Taxi t){
+		int finish=0;
 		do{
 			driverSubMenu.executa();
 			switch(driverSubMenu.getOpcao()){
 				case 1: getInformationNextClient(); break;
 				case 2: startTaxiRide(t); break;
 				case 3: finishTaxiRide(t); break;
-				case 4: endWork(); break;
+				case 4: endWork();
+								finish = 1;
+								break;
 			}
-		}while(driverSubMenu.getOpcao()!=0);
+			if(finish==0 && driverSubMenu.getOpcao()==0) System.out.println("Não pode sair sem dar por concluído o trabalho!");
+		}while((driverSubMenu.getOpcao()!=0 && finish==0) || (driverSubMenu.getOpcao()==0 && finish==0));
 	}
 
 	private void admin(){
@@ -365,9 +369,9 @@ public class UMeRapp implements Serializable {
 		System.out.println("Opção 3: Mota");
 		op = read.nextInt();
 		switch(op){
-			case 1: availableTaxis(1);
-			case 2: availableTaxis(2);
-			case 3: availableTaxis(3);
+			case 1: availableTaxis(1); break;
+			case 2: availableTaxis(2); break;
+			case 3: availableTaxis(3); break;
 		}
 	}
 
@@ -438,6 +442,7 @@ public class UMeRapp implements Serializable {
 				addFavorite(t.clone());
 			}
 		}
+		else System.out.println("Sem Carros neste momento");
 	}
 
 	private void specificVan(){
@@ -468,6 +473,7 @@ public class UMeRapp implements Serializable {
 				addFavorite(t.clone());
 			}
 		}
+		else System.out.println("Sem Carrinhas neste momento");
 	}
 
 	private void specificMotorBike(){
@@ -498,6 +504,7 @@ public class UMeRapp implements Serializable {
 				addFavorite(t.clone());
 			}
 		}
+		else System.out.println("Sem Motas neste momento");
 	}
 
 	private void closestTaxi(){
@@ -528,6 +535,7 @@ public class UMeRapp implements Serializable {
 				addFavorite(t.clone());
 			}
 		}
+		else System.out.println("Sem taxis");
 	}
 
 
@@ -535,8 +543,10 @@ public class UMeRapp implements Serializable {
 		Scanner read = new Scanner(System.in);
 		String email, answer;
 		Taxi t = null;
-		printDrivers();
-		email = writeEmail();
+		boolean bool;
+		bool = this.taxiCompany.printDrivers();
+		if(bool == true){email = this.taxiCompany.writeEmail();}
+		else return;
 		try{
 			Iterator<Taxi> it = this.taxiCompany.getTaxis().iterator();
 			int flag=0;
@@ -554,59 +564,7 @@ public class UMeRapp implements Serializable {
 				makeTrip(t);
 			}
 		}catch(NoTaxisException e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-	private String writeEmail(){
-		Scanner read = new Scanner(System.in);
-		String email=null, actual=null;
-		try{
-			Iterator<Taxi> it = this.taxiCompany.getTaxis().iterator();
-			Taxi t;
-			int flag=0;
-			do{
-				System.out.print("Escolha o e-mail do motorista pretendido: ");
-				email = read.nextLine();
-				while(it.hasNext() && flag==0){
-					t = it.next();
-					actual = t.getDriver().getEmail();
-					if(actual.equals(email)==false) System.out.println("E-mail inválido. Tente outra vez!");
-					else flag=1;
-				}
-			}while(email.equals(actual)==false);
-		}catch(NoTaxisException e){System.out.println("Sem Taxis");}
-		return email;
-	}
-
-	private String writePlate(){
-		Scanner read = new Scanner(System.in);
-		String plate=null, actual=null;
-		try{
-			Iterator<Taxi> it = this.taxiCompany.getTaxis().iterator();
-			Taxi t;
-			int flag=0;
-			do{
-				System.out.print("Escolha o e-mail do motorista pretendido: ");
-				plate = read.nextLine();
-				while(it.hasNext() && flag==0){
-					t = it.next();
-					actual = t.getVehicle().getPlate();
-					if(actual.equals(plate)==false) System.out.println("E-mail inválido. Tente outra vez!");
-					else flag=1;
-				}
-			}while(plate.equals(actual)==false);
-		}catch(NoTaxisException e){System.out.println("Sem Taxis");}
-		return plate;
-	}
-
-	private void printDrivers(){
-		try{
-			for (Taxi t: this.taxiCompany.getTaxis()){
-				System.out.println(t.getDriver().getEmail());
-			}
-		} catch(NoTaxisException e){
-			System.out.println("Sem motoristas");
+			System.out.println("Sem Taxis");
 		}
 	}
 
@@ -620,8 +578,8 @@ public class UMeRapp implements Serializable {
 
 	private void showHistory(){
 		switch(this.userType){
-			case 1: this.client.printHistory();
-			case 2: this.driver.printHistory();
+			case 1: this.client.printHistory(); break;
+			case 2: this.driver.printHistory(); break;
 		}
 	}
 

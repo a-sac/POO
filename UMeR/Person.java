@@ -79,12 +79,15 @@ public abstract class Person{
 
   public void printHistory(){
     Set<Map.Entry<Date, List<TaxiRide>>> t = this.history.entrySet();
-    System.out.println("Histórico: " + this.history.size());
-    for(Map.Entry<Date, List<TaxiRide>> elem : t){
-      System.out.println("Viagens em " + elem.getKey().toString());
-      for(TaxiRide tr : elem.getValue()){
-        System.out.println(tr.toString());
+    if(this.history.size()!=0){
+      System.out.println("Histórico: " + this.history.size());
+      for(Map.Entry<Date, List<TaxiRide>> elem : t){
+        System.out.println("Viagens em " + elem.getKey().toString());
+        for(TaxiRide tr : elem.getValue()){
+          System.out.println(tr.toString());
+        }
       }
     }
+    else System.out.println("Ainda sem histórico!");
   }
 }
