@@ -55,8 +55,8 @@ public class UMeRapp implements Serializable {
 		"Mostrar histórico de viagens",
 		"Fechar sessão"};
 
-		String[] signUp = {"Registar cliente",
-		"Registar motorista"};
+		String[] signUp = {"Sou cliente",
+		"Sou motorista"};
 
 		String[] vehicle = {"Mostrar Velocidade média",
 		"Mostrar fator de confiança",
@@ -103,7 +103,7 @@ public class UMeRapp implements Serializable {
 		Scanner read = new Scanner(System.in);
 		int code;
 		do {
-			homeMenu.executa();
+			homeMenu.executaHomeMenu();
 			switch(homeMenu.getOpcao()) {
 				case 1: try {
 					login();
@@ -150,7 +150,7 @@ public class UMeRapp implements Serializable {
 
 	private void runClientMenu() {
 		do {
-			clientMenu.executa();
+			clientMenu.executaClientMenu();
 			switch(clientMenu.getOpcao()) {
 				case 1: searchTaxisByType(); break;
 				case 2: availableTaxis(); break;
@@ -165,7 +165,7 @@ public class UMeRapp implements Serializable {
 
 	private void runDriverMenu() {
 		do {
-			driverMenu.executa();
+			driverMenu.executaDriverMenu();
 			switch(driverMenu.getOpcao()) {
 				case 1:	Taxi t = startWork();
 								runDriverSubMenu(t.clone());
@@ -179,7 +179,7 @@ public class UMeRapp implements Serializable {
 	private void runDriverSubMenu(Taxi t){
 		int finish=0;
 		do{
-			driverSubMenu.executa();
+			driverSubMenu.executaSubDriverMenu();
 			switch(driverSubMenu.getOpcao()){
 				case 1: getInformationNextClient(); break;
 				case 2: startTaxiRide(t); break;
@@ -194,7 +194,7 @@ public class UMeRapp implements Serializable {
 
 	private void admin(){
 		do{
-			adminMenu.executa();
+			adminMenu.executaAdminMenu();
 			switch(adminMenu.getOpcao()){
 				case 1: signUpVehicle(); break;
 				case 2: top10Clients(); break;
@@ -210,7 +210,7 @@ public class UMeRapp implements Serializable {
 		Scanner input = new Scanner(System.in);
 		int answer, nd;
 
-		signUpMenu.executa();
+		signUpMenu.executaSignUpMenu();
 		try{
 			if (signUpMenu.getOpcao() == 0) {
 				System.out.println("Registo cancelado");
@@ -391,7 +391,7 @@ public class UMeRapp implements Serializable {
 		this.client.addDestination(final_x, final_y);
 
 		do{
-			callingTaxiMenu.executa();
+			callingTaxiMenu.executaCallTaxiMenu();
 			switch(callingTaxiMenu.getOpcao()){
 				case 1: specificVehicle(); break;
 				case 2: closestTaxi(); break;
@@ -405,7 +405,7 @@ public class UMeRapp implements Serializable {
 		String answer;
 		Scanner read = new Scanner(System.in);
 		do{
-			specificVehicleMenu.executa();
+			specificVehicleMenu.executaSpecificVehicleMenu();
 			switch(specificVehicleMenu.getOpcao()){
 				case 1:	specificCar(); break;
 				case 2: specificVan(); break;
@@ -585,7 +585,7 @@ public class UMeRapp implements Serializable {
 
 	private void addFavorite(Taxi t){
 		do{
-			favoriteMenu.executa();
+			favoriteMenu.executaFavoriteMenu();
 			switch(favoriteMenu.getOpcao()){
 				case 1: addFavoriteDriver(t); break;
 				case 2: addFavoriteVehicle(t); break;
@@ -659,7 +659,7 @@ public class UMeRapp implements Serializable {
 		double avgSpeed, factor;
 		int nv;
 
-		signUpVehicleMenu.executa();
+		signUpVehicleMenu.executaSignUpVehicleMenu();
 		if (signUpVehicleMenu.getOpcao() == 0) {
 			System.out.println("Registo cancelado");
 			return;
