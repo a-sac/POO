@@ -15,11 +15,11 @@ import java.io.IOException;
 public class UMeRapp implements Serializable {
 
 	private UMeR taxiCompany;
-	private Admin admin;
-	private Client client;
-	private Driver driver;
-	private int userType;
-	private Menu homeMenu, clientMenu, driverMenu, signUpMenu, vehicleMenu, callingTaxiMenu, favoriteMenu, signUpVehicleMenu, adminMenu, specificVehicleMenu, driverSubMenu;
+	private static Admin admin;
+	private static Client client;
+	private static Driver driver;
+	private static int userType;
+	private static Menu homeMenu, clientMenu, driverMenu, signUpMenu, vehicleMenu, callingTaxiMenu, favoriteMenu, signUpVehicleMenu, adminMenu, specificVehicleMenu, driverSubMenu;
 
 	public void run() {
 		StartApp();
@@ -818,30 +818,26 @@ public class UMeRapp implements Serializable {
 
 	public void StartApp(){
 		try {
-			FileInputStream file = new FileInputStream(new File("data"));
-			ObjectInputStream ios = new ObjectInputStream(file);
-			/*try{
-			this.taxiCompany = (UMeR) ios.readObject();
-		} catch(ClassNotFoundException i){
-		System.out.println("Error while loading data.");
-		i.printStackTrace(System.out);
-	}*/
-	ios.close();
-} catch(IOException e) {
-	System.out.println("Error while loading data.");
-	e.printStackTrace(System.out);
-}
-}
-
-public void EndApp(){
-	try {
-		ObjectOutputStream oos = new ObjectOutputStream ( new FileOutputStream("data"));
-		oos.writeObject(this.taxiCompany);
-		oos.flush();
-		oos.close();
-	} catch(IOException e) {
-		System.out.println("Error while saving data.");
-		e.printStackTrace(System.out);
+				FileInputStream fis = new FileInputStream("data");
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				this.taxiCompany = (UMeR) ois.readObject();
+				ois.close();
+				System.out.println("Successfully loaded state.");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 	}
-}
+
+	public void EndApp(){
+			try {
+				FileOutputStream fos = new FileOutputStream("data");
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(this.taxiCompany);
+				oos.flush();
+				oos.close();
+				System.out.println("Guardado!");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+	}
 }

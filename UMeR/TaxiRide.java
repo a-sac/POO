@@ -1,11 +1,12 @@
 
+import java.io.Serializable;
 /**
  * Write a description of class TaxiRide here.
  *
  * @author jhbb
  * @version 02/04
  */
-public class TaxiRide{
+public class TaxiRide implements Serializable{
   private Point2D start;
   private Point2D destination;
   private String driverEmail;

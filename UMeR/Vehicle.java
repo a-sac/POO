@@ -1,11 +1,12 @@
 import java.util.Queue;
+import java.io.Serializable;
 /**
  * Escreva a descrição da classe Vehicle aqui.
  *
  * @author tdaa
  * @version 19/04
  */
-public abstract class Vehicle{
+public abstract class Vehicle implements Serializable{
 
     private double avgSpeed;
     private double factor;

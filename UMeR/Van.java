@@ -1,11 +1,13 @@
 
+
 /**
  * Write a description of class Van here.
  *
  * @author jhbb
  * @version 28/04
  */
-public class Van extends Vehicle{
+public class Van extends Vehicle
+{
 
   public static int seats = 8;
 

@@ -1,11 +1,11 @@
-
+import java.io.Serializable;
 /**
  * Escreva a descrição da classe Driver aqui.
  *
  * @author tdaa/jhbb
  * @version 02/05
  */
-public class Driver extends Person{
+public class Driver extends Person implements Serializable{
 
     private double trustFactor;
     private double evaluation;

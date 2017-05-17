@@ -1,5 +1,5 @@
 import java.lang.Math;
-
+import java.io.Serializable;
 /**
  * Write a description of class Point2D here.
  *
@@ -7,7 +7,7 @@ import java.lang.Math;
  * @version 1.0 19/04/2017
  */
 
-public class Point2D {
+public class Point2D implements Serializable{
   private double x;
   private double y;
 

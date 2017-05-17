@@ -1,11 +1,12 @@
 import java.util.*;
+import java.io.Serializable;
 /**
  * Write a description of class UMeR here.
  *
  * @author jhbb
  * @version 02/05
  */
-public class UMeR{
+public class UMeR implements Serializable{
   private int userType; // 1 is client; 2 is driver
   private int nVehicles;
   private int nDrivers;

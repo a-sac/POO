@@ -5,7 +5,8 @@
  * @author jhbb
  * @version 28/04
  */
-public class Car extends Vehicle{
+public class Car extends Vehicle
+{
 
   public static int seats = 4;
 

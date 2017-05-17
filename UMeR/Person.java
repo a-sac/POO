@@ -1,12 +1,13 @@
 import java.util.*;
 
+import java.io.Serializable;
 /**
 * Write a description of class Person here.
 *
 * @author jhbb
 * @version 02/05
 */
-public abstract class Person{
+public abstract class Person implements Serializable{
 
   private String email;
   private String password;

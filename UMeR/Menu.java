@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 /**
  * Esta classe implementa um menu em modo texto.
  *
@@ -11,7 +12,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-public class Menu {
+public class Menu implements Serializable{
     // variáveis de instância
     private List<String> opcoes;
     private int op;
