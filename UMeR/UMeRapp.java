@@ -136,9 +136,13 @@ public class UMeRapp implements Serializable {
 				case 5: try {
 					this.admin = new Admin();
 					System.out.println("Digite o código: ");
-					code = read.nextInt();
-					if(code == this.admin.getCode()) admin();
-					else System.out.println("Código inválido");
+					try{
+						code = read.nextInt();
+						if(code == this.admin.getCode()) admin();
+						else System.out.println("Código inválido");
+					} catch (InputMismatchException e) {
+						System.out.println("Problema no código");
+					}
 				} catch (NullPointerException e){
 					System.out.println("There was a problem during the last request. You are not an admin");
 				}
@@ -196,8 +200,20 @@ public class UMeRapp implements Serializable {
 		do{
 			adminMenu.executaAdminMenu();
 			switch(adminMenu.getOpcao()){
-				case 1: signUpVehicle(); break;
-				case 2: top10Clients(); break;
+				case 1: 
+				try{
+					signUpVehicle();
+				} catch (InputMismatchException e){
+					System.out.println("Problema a registar veiculo");
+				}
+					break;
+				case 2: 
+				try{
+					 top10Clients();
+				 } catch (ClassCastException e) {
+					 System.out.println("Problema a escrever os 10 motoristas (provavelmente ainda não há motoristas registados)");
+				 }
+				  break;
 				case 3: worst5Drivers(); break;
 			}
 		}while(adminMenu.getOpcao() != 0);
