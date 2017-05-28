@@ -30,11 +30,11 @@ public class Client extends Person
     this.favoriteVehicles = new TreeMap<String,Vehicle>();
   }
 
-  public void addLocation(double x, double y){
+  public void setLocation(double x, double y){
     this.location = new Point2D(x,y);
   }
 
-  public void addDestination(double x, double y){
+  public void setDestination(double x, double y){
     this.destination = new Point2D(x,y);
   }
 
@@ -81,7 +81,6 @@ public class Client extends Person
   public void addDriver(Driver neo) throws UserExistsException{
     if(this.favoriteDrivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
     this.favoriteDrivers.put(neo.getEmail(), neo);
-    System.out.println(this.favoriteDrivers.get(neo.getEmail()));
   }
 
   public void addVehicle(Vehicle neo) throws VehicleExistsException{

@@ -1,12 +1,13 @@
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.Serializable;
 /**
  * Escreva a descrição da classe Taxi aqui.
  *
  * @author tdaa/jhbb
  * @version 21/04
  */
-public class Taxi{
+public class Taxi implements Serializable{
   private Driver driver;
   private Vehicle vehicle;
   private Client client;
@@ -147,6 +148,7 @@ public class Taxi{
   public void clientLeaves(){
     System.out.println(this.trip.toString());
     this.client.addToHistory(new Date(), this.trip);
+    this.driver.addToHistory(new Date(), this.trip);
     this.client = null;
     this.trip = null;
     this.occupied = false;

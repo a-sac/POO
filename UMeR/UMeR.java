@@ -11,8 +11,9 @@ public class UMeR implements Serializable{
   private int nVehicles;
   private int nDrivers;
   private TreeMap<String, Client> clients;
-  private TreeMap<String, Vehicle> vehicles;//vehicles with no driver
-  private TreeMap<String, Driver> drivers;//drivers with no
+  private TreeMap<String, Vehicle> vehicles;
+  private TreeMap<String, Driver> drivers;
+  private TreeMap<String, Driver> workingDrivers;
   private TreeSet<Taxi> taxis;
   private static int driverCode = 611;
 
@@ -20,6 +21,7 @@ public class UMeR implements Serializable{
     this.clients = new TreeMap<String, Client>();
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
+    this.workingDrivers = new TreeMap<String, Driver>();
     this.taxis = new TreeSet<Taxi>(new TaxiComparator());
     this.nVehicles = this.vehicles.size();
     this.nDrivers = this.drivers.size();
@@ -71,6 +73,17 @@ public class UMeR implements Serializable{
     }
   }
 
+  public Map<String, Driver> getWorkingDrivers() throws NoDriversException{
+    if(this.workingDrivers.isEmpty()) throw new NoDriversException("No drivers in database");
+    else{
+      Map<String, Driver> neo = new TreeMap<String, Driver>();
+      for(Map.Entry<String, Driver> entrys : this.workingDrivers.entrySet()){
+        neo.put(entrys.getKey(), entrys.getValue());
+      }
+      return neo;
+    }
+  }
+
   public Map<String, Vehicle> getVehicles() throws NoVehiclesException{
     if(this.vehicles.isEmpty()) throw new NoVehiclesException("No vehicles in database");
     else{
@@ -96,11 +109,17 @@ public class UMeR implements Serializable{
   public void addVehicle(Vehicle neo) throws VehicleExistsException{
     if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Veículo já existente");
     this.vehicles.put(neo.getPlate(), neo);
+    System.out.println(this.vehicles);
   }
 
   public void addDriver(Driver neo) throws UserExistsException{
     if(this.drivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
     this.drivers.put(neo.getEmail(), neo);
+  }
+
+  public void addWorkingDriver(Driver neo) throws UserExistsException{
+    if(this.workingDrivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
+    this.workingDrivers.put(neo.getEmail(), neo);
   }
 
   public void addTaxi(Driver d, Vehicle v){
@@ -116,6 +135,7 @@ public class UMeR implements Serializable{
       t = it.next();
       distance = t.getLocation().distanceTo(c.getLocation());
     }
+    else System.out.println("Sem Taxis");
     while(it.hasNext()){
       t = it.next();
       tmp = t.getLocation().distanceTo(c.getLocation());
@@ -159,7 +179,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof Car) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof Car)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof Car){
@@ -182,7 +203,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof Car) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof Car)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof Car && t.isOccupied()==false){
@@ -205,7 +227,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof Van) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof Van)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof Van){
@@ -228,7 +251,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof Van) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof Van)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof Van && t.isOccupied()==false){
@@ -251,7 +275,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof MotorBike) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof MotorBike)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof MotorBike){
@@ -274,7 +299,8 @@ public class UMeR implements Serializable{
         distance = t.getLocation().distanceTo(c.getLocation());
       }
     }
-    if(it==null) return null;
+    if(it.hasNext() == false && t.getVehicle() instanceof MotorBike) return t;
+    else if(it.hasNext() == false && !(t.getVehicle() instanceof MotorBike)) return null;
     while(it.hasNext()){
       t = it.next();
       if(t.getVehicle() instanceof MotorBike && t.isOccupied()==false){
@@ -335,7 +361,9 @@ public class UMeR implements Serializable{
     Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
     this.taxis.add(t);
     this.vehicles.remove(this.vehicles.firstKey());
-    this.drivers.remove(d.getEmail());
+    //this.drivers.remove(d.getEmail());
+    try{addWorkingDriver(d);}
+    catch(UserExistsException e){System.out.println("Motorista existente");}
     System.out.println("Tenha um bom dia de trabalho " + d.getName());
     return t;
   }
@@ -347,12 +375,17 @@ public class UMeR implements Serializable{
     while(it.hasNext() && flag==0){
       t = it.next();
       if(t.getDriver().getEmail().equals(d.getEmail())){
-        this.drivers.put(d.getEmail(), d);
+        this.drivers.replace(d.getEmail(), d);
+        this.workingDrivers.remove(d.getEmail());
         this.vehicles.put(t.getVehicle().getPlate(), t.getVehicle().clone());
         this.taxis.remove(t);
         flag=1;
       }
     }
+  }
+
+  public void removeClient(Client c){
+    this.clients.remove(c.getEmail());
   }
 
   public int getTraffic(Taxi t){

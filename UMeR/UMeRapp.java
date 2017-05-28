@@ -48,12 +48,11 @@ public class UMeRapp implements Serializable {
 		"Mostrar todos os Táxis",
 		"Pedir Táxi",
 		"Mostrar histórico de viagens",
-		"Obter lista de favoritos",
-		"Fechar sessão"};
+		"Obter lista de favoritos"};
 
 		String[] driver = {"Começar trabalho",
 		"Mostrar histórico de viagens",
-		"Fechar sessão"};
+		"Terminar trabalho"};
 
 		String[] signUp = {"Sou cliente",
 		"Sou motorista"};
@@ -83,8 +82,7 @@ public class UMeRapp implements Serializable {
 
 		String[] subDriver = {"Obter informação do cliente seguinte",
 		"Iniciar viagem",
-		"Finalizar viagem",
-		"Terminar trabalho"};
+		"Finalizar viagem"};
 
 		homeMenu = new Menu(main);
 		clientMenu = new Menu(client);
@@ -138,13 +136,15 @@ public class UMeRapp implements Serializable {
 					System.out.println("Digite o código: ");
 					try{
 						code = read.nextInt();
-						if(code == this.admin.getCode()) admin();
+						if(code == this.admin.getCode()) runAdmin();
 						else System.out.println("Código inválido");
 					} catch (InputMismatchException e) {
 						System.out.println("Problema no código");
+						String input = read.next();
+						continue;
 					}
 				} catch (NullPointerException e){
-					System.out.println("There was a problem during the last request. You are not an admin");
+					System.out.println("Houve um problema no último pedido. Voçê não é um admin");
 				}
 				break;
 
@@ -162,7 +162,7 @@ public class UMeRapp implements Serializable {
 				case 4: callTaxi(); break;
 				case 5: showHistory(); break;
 				case 6: getFavorites(); break;
-				case 7: logout(); break;
+				//case 7: logout(); break;
 			}
 		}while(clientMenu.getOpcao() != 0);
 	}
@@ -175,7 +175,8 @@ public class UMeRapp implements Serializable {
 								runDriverSubMenu(t.clone());
 								break;
 				case 2: showHistory(); break;
-				case 3: logout(); break;
+				case 3: endWork(); break;
+				//case 3: logout(); break;
 			}
 		} while(driverMenu.getOpcao() != 0);
 	}
@@ -188,33 +189,36 @@ public class UMeRapp implements Serializable {
 				case 1: getInformationNextClient(); break;
 				case 2: startTaxiRide(t); break;
 				case 3: finishTaxiRide(t); break;
-				case 4: endWork();
-								finish = 1;
-								break;
 			}
-			if(finish==0 && driverSubMenu.getOpcao()==0) System.out.println("Não pode sair sem dar por concluído o trabalho!");
-		}while((driverSubMenu.getOpcao()!=0 && finish==0) || (driverSubMenu.getOpcao()==0 && finish==0));
+			//if(finish==0 && driverSubMenu.getOpcao()==0) System.out.println("Não pode sair sem dar por concluído o trabalho!");
+		}while(driverSubMenu.getOpcao()!=0); //|| (driverSubMenu.getOpcao()==0 && finish==0));
 	}
 
-	private void admin(){
+	private void runAdmin(){
 		do{
 			adminMenu.executaAdminMenu();
 			switch(adminMenu.getOpcao()){
-				case 1: 
+				case 1:
 				try{
 					signUpVehicle();
 				} catch (InputMismatchException e){
 					System.out.println("Problema a registar veiculo");
 				}
 					break;
-				case 2: 
+				case 2:
 				try{
 					 top10Clients();
 				 } catch (ClassCastException e) {
 					 System.out.println("Problema a escrever os 10 motoristas (provavelmente ainda não há motoristas registados)");
 				 }
 				  break;
-				case 3: worst5Drivers(); break;
+				case 3:
+					try{
+						worst5Drivers();
+					}catch (ClassCastException e) {
+ 					 System.out.println("Problema a escrever os 10 motoristas (provavelmente ainda não há motoristas registados)");
+ 				 }
+					break;
 			}
 		}while(adminMenu.getOpcao() != 0);
 	}
@@ -314,9 +318,9 @@ public class UMeRapp implements Serializable {
 		}
 	}
 
-	private void logout(){
+	/*private void logout(){
 		runHomeMenu();
-	}
+	}*/
 
 	private void saveClientData(String email){
 		try{
@@ -403,8 +407,8 @@ public class UMeRapp implements Serializable {
 		System.out.println("Destino: (coordenada y)");
 		final_y = read.nextDouble();
 
-		this.client.addLocation(x,y);
-		this.client.addDestination(final_x, final_y);
+		this.client.setLocation(x,y);
+		this.client.setDestination(final_x, final_y);
 
 		do{
 			callingTaxiMenu.executaCallTaxiMenu();
@@ -433,25 +437,25 @@ public class UMeRapp implements Serializable {
 	private void specificCar(){
 		String answer;
 		Scanner read = new Scanner(System.in);
-		if(this.taxiCompany.getClosestCar(this.client.clone())!=null){
-			Taxi t = this.taxiCompany.getClosestCar(this.client.clone());
+		if(this.taxiCompany.getClosestCar(this.client)!=null){
+			Taxi t = this.taxiCompany.getClosestCar(this.client);
 			if(t.isOccupied() == true){
 				System.out.println("O taxi-carro mais próximo está ocupado. Deseja ir para a fila de espera? [Sim/Não]\n Caso não queira, será chamado o taxi-carro livre mais próximo.");
 				answer = read.nextLine();
-				if(answer.equals("Sim")) this.taxiCompany.getClosestCar(this.client.clone()).enqueue(this.client);
+				if(answer.equals("Sim")) this.taxiCompany.getClosestCar(this.client).enqueue(this.client);
 				if(answer.equals("Não")) {
 					System.out.println("A encontrar taxi-carro livre mais próximo...");
-					t = this.taxiCompany.getClosestFreeCar(this.client.clone());
+					t = this.taxiCompany.getClosestFreeCar(this.client);
 					System.out.println("Taxi a caminho!");
 					makeTrip(t);
 					System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 					answer = read.nextLine();
-					if(answer.equals("Sim")) addFavorite(t.clone());
+					if(answer.equals("Sim")) addFavorite(t);
 				}
 			}
 			else {
 				System.out.println("Taxi a caminho!");
-				makeTrip(this.taxiCompany.getClosestCar(this.client.clone()));
+				makeTrip(this.taxiCompany.getClosestCar(this.client));
 				System.out.println("Pretende adicionar o Taxi aos favoritos?");
 				answer = read.nextLine();
 				if(answer.equals("Sim"))
@@ -464,7 +468,7 @@ public class UMeRapp implements Serializable {
 	private void specificVan(){
 		String answer;
 		Scanner read = new Scanner(System.in);
-		if(this.taxiCompany.getClosestVan(this.client.clone())!=null){
+		if(this.taxiCompany.getClosestVan(this.client)!=null){
 			Taxi t = this.taxiCompany.getClosestVan(this.client.clone());
 			if(t.isOccupied() == true){
 				System.out.println("O taxi-carro mais próximo está ocupado. Deseja ir para a fila de espera? [Sim/Não]\n Caso não queira, será chamado o taxi-carro livre mais próximo.");
@@ -526,29 +530,29 @@ public class UMeRapp implements Serializable {
 	private void closestTaxi(){
 		String answer;
 		Scanner read = new Scanner(System.in);
-		if(this.taxiCompany.getClosestTaxi(this.client.clone())!=null){
-			Taxi t = this.taxiCompany.getClosestTaxi(this.client.clone());
+		if(this.taxiCompany.getClosestTaxi(this.client) != null){
+			Taxi t = this.taxiCompany.getClosestTaxi(this.client);
 			if(t.isOccupied() == true){
 				System.out.println("O taxi-carro mais próximo está ocupado. Deseja ir para a fila de espera? [Sim/Não]\n Caso não queira, será chamado o taxi-carro livre mais próximo.");
 				answer = read.nextLine();
 				if(answer.equals("Sim")) this.taxiCompany.getClosestTaxi(this.client.clone()).enqueue(this.client);
 				if(answer.equals("Não")) {
 					System.out.println("A encontrar taxi-carro livre mais próximo...");
-					t = this.taxiCompany.getClosestFreeTaxi(this.client.clone());
+					t = this.taxiCompany.getClosestFreeTaxi(this.client);
 					System.out.println("Taxi a caminho!");
 					makeTrip(t);
 					System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 					answer = read.nextLine();
-					if(answer.equals("Sim")) addFavorite(t.clone());
+					if(answer.equals("Sim")) addFavorite(t);
 				}
 			}
 			else {
 				System.out.println("Taxi a caminho!");
-				makeTrip(this.taxiCompany.getClosestTaxi(this.client.clone()));
+				makeTrip(this.taxiCompany.getClosestTaxi(this.client));
 				System.out.println("Pretende adicionar o Taxi aos favoritos?");
 				answer = read.nextLine();
 				if(answer.equals("Sim"))
-				addFavorite(t.clone());
+				addFavorite(t);
 			}
 		}
 		else System.out.println("Sem taxis");
@@ -590,6 +594,12 @@ public class UMeRapp implements Serializable {
 		t.pickUpClient();
 		t.rideStart(taxiCompany.getTraffic(t));
 		t.rideEnd();
+		this.taxiCompany.removeClient(this.client);
+		try{
+			this.taxiCompany.addClient(this.client);
+		}catch(UserExistsException e){
+			System.out.println("Cliente já existente");
+		}
 	}
 
 	private void showHistory(){
@@ -611,7 +621,8 @@ public class UMeRapp implements Serializable {
 
 	private void addFavoriteDriver(Taxi t){
 		try{
-			this.client.addDriver(t.getDriver().clone());
+			this.client.addDriver(t.getDriver());
+			System.out.println("Motorista adicionado aos favoritos!");
 		}catch(UserExistsException e){
 			System.out.println("Motorista existente");
 		}
@@ -619,7 +630,8 @@ public class UMeRapp implements Serializable {
 
 	private void addFavoriteVehicle(Taxi t){
 		try{
-			this.client.addVehicle(t.getVehicle().clone());
+			this.client.addVehicle(t.getVehicle());
+			System.out.println("Veículo adicionado aos favoritos!");
 		}catch(VehicleExistsException e){
 			System.out.println("Veículo já existente");
 		}
@@ -699,12 +711,14 @@ public class UMeRapp implements Serializable {
 			nv++;
 			this.taxiCompany.setNVehicles(nv);
 			break;
+
 			case 2: Van v = new Van(avgSpeed, factor, plate);
 			signUpVan(v);
 			nv = this.taxiCompany.getNVehicles();
 			nv++;
 			this.taxiCompany.setNVehicles(nv);
 			break;
+
 			case 3: MotorBike m = new MotorBike(avgSpeed, factor, plate);
 			signUpMotorBike(m);
 			nv = this.taxiCompany.getNVehicles();

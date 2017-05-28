@@ -88,6 +88,7 @@ public abstract class Person implements Serializable{
           System.out.println(tr.toString());
         }
       }
+      System.out.println("-------------------------");
     }
     else System.out.println("Ainda sem histórico!");
   }
