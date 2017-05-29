@@ -1,4 +1,8 @@
-public class Test
+import java.util.*;
+
+import java.io.Serializable;
+
+public class Test implements Serializable
 {
   public Test(UMeR taxiCompany){
     taxiCompany.setNDrivers(15);
@@ -83,49 +87,58 @@ public class Test
     }
 
     try{
-    taxiCompany.addClient(client1);
-    taxiCompany.addClient(client2);
-    taxiCompany.addClient(client3);
-    taxiCompany.addClient(client4);
-    taxiCompany.addClient(client5);
-    taxiCompany.addClient(client6);
-    taxiCompany.addClient(client7);
-    taxiCompany.addClient(client8);
-    taxiCompany.addClient(client9);
-    taxiCompany.addClient(client10);
-    taxiCompany.addClient(client11);
-    taxiCompany.addClient(client12);
-    taxiCompany.addClient(client13);
-    taxiCompany.addClient(client14);
-    taxiCompany.addClient(client15);
-    taxiCompany.addClient(client16);
-    taxiCompany.addClient(client17);
-    taxiCompany.addClient(client18);
-    taxiCompany.addClient(client19);
-    taxiCompany.addClient(client20);
+      taxiCompany.addClient(client1);
+      taxiCompany.addClient(client2);
+      taxiCompany.addClient(client3);
+      taxiCompany.addClient(client4);
+      taxiCompany.addClient(client5);
+      taxiCompany.addClient(client6);
+      taxiCompany.addClient(client7);
+      taxiCompany.addClient(client8);
+      taxiCompany.addClient(client9);
+      taxiCompany.addClient(client10);
+      taxiCompany.addClient(client11);
+      taxiCompany.addClient(client12);
+      taxiCompany.addClient(client13);
+      taxiCompany.addClient(client14);
+      taxiCompany.addClient(client15);
+      taxiCompany.addClient(client16);
+      taxiCompany.addClient(client17);
+      taxiCompany.addClient(client18);
+      taxiCompany.addClient(client19);
+      taxiCompany.addClient(client20);
     } catch (UserExistsException a) {
       System.out.println("Erro loading clients");
     }
 
     try{
-    taxiCompany.addDriver(driver1);
-    taxiCompany.addDriver(driver2);
-    taxiCompany.addDriver(driver3);
-    taxiCompany.addDriver(driver4);
-    taxiCompany.addDriver(driver5);
-    taxiCompany.addDriver(driver6);
-    taxiCompany.addDriver(driver7);
-    taxiCompany.addDriver(driver8);
-    taxiCompany.addDriver(driver9);
-    taxiCompany.addDriver(driver10);
-    taxiCompany.addDriver(driver11);
-    taxiCompany.addDriver(driver12);
-    taxiCompany.addDriver(driver13);
-    taxiCompany.addDriver(driver14);
-    taxiCompany.addDriver(driver15);
+      taxiCompany.addDriver(driver1);
+      taxiCompany.addDriver(driver2);
+      taxiCompany.addDriver(driver3);
+      taxiCompany.addDriver(driver4);
+      taxiCompany.addDriver(driver5);
+      taxiCompany.addDriver(driver6);
+      taxiCompany.addDriver(driver7);
+      taxiCompany.addDriver(driver8);
+      taxiCompany.addDriver(driver9);
+      taxiCompany.addDriver(driver10);
+      taxiCompany.addDriver(driver11);
+      taxiCompany.addDriver(driver12);
+      taxiCompany.addDriver(driver13);
+      taxiCompany.addDriver(driver14);
+      taxiCompany.addDriver(driver15);
     } catch (UserExistsException i){
       System.out.println("Erro loading drivers");
     }
+    
+    taxiCompany.startDay(driver10);
+    taxiCompany.startDay(driver5);
+    taxiCompany.startDay(driver4);
+    taxiCompany.startDay(driver14);
 
+    taxiCompany.addTaxi(driver10, car4);
+    taxiCompany.addTaxi(driver5, car8);
+    taxiCompany.addTaxi(driver4, van2);
+    taxiCompany.addTaxi(driver14, moto1);
   }
 }

@@ -20,7 +20,6 @@ public class UMeRapp implements Serializable {
 	private static Driver driver;
 	private static int userType;
 	private static Menu homeMenu, clientMenu, driverMenu, signUpMenu, vehicleMenu, callingTaxiMenu, favoriteMenu, signUpVehicleMenu, adminMenu, specificVehicleMenu, driverSubMenu;
-	private static Test test;
 
 	public void run() {
 		StartApp();
@@ -36,7 +35,12 @@ public class UMeRapp implements Serializable {
 	public UMeRapp(){
 		File f = new File("data");
 		this.taxiCompany = new UMeR();
-		if(!f.exists()) this.test = new Test(this.taxiCompany);
+		if(!f.exists()) new Test(this.taxiCompany);
+		try{
+			System.out.println(taxiCompany.getTaxis());
+		} catch(NoTaxisException i){
+			System.out.println("no driver");
+		}
 	}
 
 	private void loadMenus() {
