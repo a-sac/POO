@@ -98,7 +98,8 @@ public class TaxiRide implements Serializable{
   }
 
   public TaxiRide clone(){
-    return new TaxiRide(this);
+    return new TaxiRide(this.getStart(), this.getDestination(), this.getDriverEmail(), this.getClientEmail(), this.getVehicle().clone(), this.getDistance(), this.getExpectedTime(), this.getActualTime(), this.getPrice());
+
   }
 
   public String toString(){

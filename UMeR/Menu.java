@@ -132,6 +132,14 @@ public class Menu implements Serializable{
         } while (this.op == -1);
     }
 
+    public void executaProfitMenu() {
+      this.choiceMenu = 11;
+        do {
+            showMenu();
+            this.op = lerOpcao();
+        } while (this.op == -1);
+    }
+
     /** Apresentar o menu */
     private void showMenu() {
         switch(this.choiceMenu){
@@ -217,6 +225,15 @@ public class Menu implements Serializable{
           break;
 
           case 10: System.out.println(ANSI_RED + "\n*** Veículo Específico ***" );
+          for (int i=0; i<this.opcoes.size(); i++) {
+              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
+              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
+              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+          }
+          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          break;
+
+          case 11: System.out.println(ANSI_RED + "\n*** Total Faturado ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
               System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
               System.out.print(ANSI_WHITE + " - " + ANSI_RESET);

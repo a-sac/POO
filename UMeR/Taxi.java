@@ -16,6 +16,7 @@ public class Taxi implements Serializable{
   private boolean occupied;
   private Queue<Client> waitingQ;
   private double basePrice;
+  private double totalProfit;
 
   public Taxi(Taxi t){
     this.driver = t.getDriver();
@@ -24,6 +25,7 @@ public class Taxi implements Serializable{
     this.occupied = t.isOccupied();
     this.waitingQ = t.getWaitingQ();
     this.basePrice = t.getBasePrice();
+    this.totalProfit = t.getTotalProfit();
   }
 
   public Taxi(Driver driver, Vehicle vehicle){
@@ -35,15 +37,17 @@ public class Taxi implements Serializable{
     this.occupied = false;
     this.waitingQ = new LinkedList<Client>();
     this.basePrice = 0.57;
+    this.totalProfit = 0.0;
   }
 
-  public Taxi(Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice){
+  public Taxi(Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice, double totalProfit){
     this.driver = driver;
     this.vehicle = vehicle;
     this.location = location;
     this.occupied = occupied;
     this.waitingQ = new LinkedList<Client>();
     this.basePrice = basePrice;
+    this.totalProfit = totalProfit;
   }
 
   public Driver getDriver(){
@@ -78,8 +82,28 @@ public class Taxi implements Serializable{
     return this.basePrice;
   }
 
+  public double getTotalProfit(){
+    return this.totalProfit;
+  }
+
+  public void setTotalProfit(double money){
+    this.totalProfit += money;
+  }
+
+  public void setTrip(TaxiRide trip){
+    this.trip = trip.clone();
+  }
+
+  public void setClient(Client c){
+    this.client = c.clone();
+  }
+
   public Taxi clone(){
-    return new Taxi(this);
+    Taxi t = new Taxi(this.getDriver(), this.getVehicle(), this.getLocation(), this.isOccupied(),  this.getBasePrice(), this.getTotalProfit());
+    t.setClient(this.getClient().clone());
+    t.setTrip(this.getTrip().clone());
+    t.waitingQ = this.getWaitingQ();
+    return t;
   }
 
   public String toString(){
@@ -108,13 +132,13 @@ public class Taxi implements Serializable{
     this.occupied = true;
   }
 
-  public void rideStart(int trafficCounter){
+  public double rideStart(int trafficCounter){
     ThreadLocalRandom weather = ThreadLocalRandom.current();
+    double price=0.0;
     if(this.client!=null){
       double distance = this.location.distanceTo(this.client.getDestination());
       double expectedTime = distance/vehicle.getSpeed();
       double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
-      double price;
       if(actualTime > 1.25*expectedTime){
         price = (this.basePrice * distance)/2;
         this.getDriver().addTimeLost(actualTime - expectedTime);
@@ -126,6 +150,7 @@ public class Taxi implements Serializable{
       this.drive(clientDestination, distance);
     }
     else System.out.println("Sem Cliente");
+    return price;
   }
 
   public void drive(Point2D destination, double distance){
@@ -143,15 +168,19 @@ public class Taxi implements Serializable{
 
   public void chargeClient(Client c, double price){
     c.spendMoney(price);
+    this.totalProfit += price;
   }
 
   public void clientLeaves(){
     System.out.println(this.trip.toString());
     this.client.addToHistory(new Date(), this.trip);
     this.driver.addToHistory(new Date(), this.trip);
-    this.client = null;
     this.trip = null;
     this.occupied = false;
+  }
+
+  public void clientOut(){
+    this.client = null;
   }
 
   public String occupiedToString(){

@@ -17,16 +17,26 @@ public class UMeR implements Serializable
   private TreeMap<String, Driver> workingDrivers;
   private TreeSet<Taxi> taxis;
   private static int driverCode = 611;
+  private double totalProfit;
 
   public UMeR(){
     this.clients = new TreeMap<String, Client>();
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
     this.workingDrivers = new TreeMap<String, Driver>();
-    this.taxis = new TreeSet<Taxi>(new TaxiComparator());
+    this.taxis = new TreeSet<Taxi>(TaxiComparator);
     this.nVehicles = this.vehicles.size();
     this.nDrivers = this.drivers.size();
+    this.totalProfit = 0;
   }
+
+  Comparator<Taxi> TaxiComparator = new Comparator<Taxi>()
+  {
+      @Override
+      public int compare(Taxi t1, Taxi t2){
+        return t1.getVehicle().getPlate().compareTo(t2.getVehicle().getPlate());
+      }
+  };
 
   public int getUserType(){
     return this.userType;
@@ -42,6 +52,14 @@ public class UMeR implements Serializable
 
   public int getDriverCode(){
     return this.driverCode;
+  }
+
+  public double getTotalProfit(){
+    return this.totalProfit;
+  }
+
+  public void setTotalProfit(double money){
+    this.totalProfit += money;
   }
 
   public void setNVehicles(int nvehicles){
@@ -124,6 +142,17 @@ public class UMeR implements Serializable
 
   public void addTaxi(Driver d, Vehicle v){
     this.taxis.add(new Taxi(d, v));
+  }
+
+  public Taxi getSpecificTaxi(String plate){
+    Iterator<Taxi> it = this.taxis.iterator();
+    Boolean flag = false;
+    Taxi t = null;
+    while(it.hasNext() && !flag){
+      t = it.next();
+      if(t.getVehicle().getPlate().equals(plate)) flag = true;
+    }
+    return t;
   }
 
   public Taxi getClosestTaxi(Client c){
@@ -311,6 +340,18 @@ public class UMeR implements Serializable
     return t;
   }
 
+  public boolean printTaxis(){
+    boolean isEmpty = true;
+    if(this.taxis.isEmpty()==false){
+      isEmpty = false;
+      for (Taxi t: this.taxis){
+			 System.out.println(t.getVehicle().getPlate());
+		  }
+    }
+    return isEmpty;
+	}
+
+
   public boolean printDrivers(){
     boolean bool=false;
     if(this.taxis.isEmpty()==false){
@@ -343,6 +384,27 @@ public class UMeR implements Serializable
     return email;
   }
 
+  public String writePlate(){
+    Scanner read = new Scanner(System.in);
+    String plate=null, actual=null;
+    if(this.taxis.isEmpty()==false){
+      Iterator<Taxi> it = this.taxis.iterator();
+      Taxi t;
+      int flag=0;
+      do{
+        System.out.print("Escolha a matrícula do taxi pretendido: ");
+        plate = read.nextLine();
+        while(it.hasNext() && flag==0){
+          t = it.next();
+          actual = t.getVehicle().getPlate();
+          if(actual.equals(plate)==false) System.out.println("Matrícula inválida. Tente outra vez!");
+          else flag=1;
+        }
+      }while(plate.equals(actual)==false);
+    }
+    return plate;
+  }
+
   public void login(String email, String password) throws UserDoesNotExistsException{
     if(this.clients.containsKey(email) != false){
       this.userType = 1;
@@ -357,9 +419,10 @@ public class UMeR implements Serializable
   }
 
   public Taxi startDay(Driver d){
-    this.taxis = new TreeSet<Taxi>(new TaxiComparator());
+    //this.taxis = new TreeSet<Taxi>(new TaxiComparator());
     Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
     this.taxis.add(t);
+    System.out.println(this.taxis.size());
     this.vehicles.remove(this.vehicles.firstKey());
     //this.drivers.remove(d.getEmail());
     try{addWorkingDriver(d);}
@@ -384,8 +447,12 @@ public class UMeR implements Serializable
     }
   }
 
-  public void removeClient(Client c){
-    this.clients.remove(c.getEmail());
+  public void updateClient(Client c){
+    this.clients.replace(c.getEmail(), c);
+  }
+
+  public void updateDriver(Driver d){
+    this.drivers.replace(d.getEmail(), d);
   }
 
   public int getTraffic(Taxi t){

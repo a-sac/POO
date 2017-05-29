@@ -30,6 +30,15 @@ public class Client extends Person
     this.favoriteVehicles = new TreeMap<String,Vehicle>();
   }
 
+  public Client(Point2D location, Point2D destination, String email, String password, String name, String address, String birthday, double spent){
+    super(email, password, name, address, birthday);
+    this.favoriteDrivers = new TreeMap<String,Driver>();
+    this.favoriteVehicles = new TreeMap<String,Vehicle>();
+    this.spent = spent;
+    this.location = location;
+    this.destination = destination;
+  }
+
   public void setLocation(double x, double y){
     this.location = new Point2D(x,y);
   }
@@ -50,20 +59,32 @@ public class Client extends Person
     return this.spent;
   }
 
-  public Map<String, Driver> getFavoriteDrivers(){
-    Map<String, Driver> neo = new TreeMap<String, Driver>();
+  public TreeMap<String, Driver> getFavoriteDrivers(){
+    TreeMap<String, Driver> neo = new TreeMap<String, Driver>();
     for(Map.Entry<String, Driver> entrys : this.favoriteDrivers.entrySet()){
       neo.put(entrys.getKey(), entrys.getValue());
     }
     return neo;
   }
 
-  public Map<String, Vehicle> getFavoriteVehicles(){
-    Map<String, Vehicle> neo = new TreeMap<String, Vehicle>();
+  public TreeMap<String, Vehicle> getFavoriteVehicles(){
+    TreeMap<String, Vehicle> neo = new TreeMap<String, Vehicle>();
     for(Map.Entry<String, Vehicle> entrys : this.favoriteVehicles.entrySet()){
       neo.put(entrys.getKey(), entrys.getValue());
     }
     return neo;
+  }
+
+  public void setFavoriteDrivers(TreeMap<String, Driver> neo){
+    for(Map.Entry<String, Driver> entrys : neo.entrySet()){
+      this.favoriteDrivers.put(entrys.getKey(), entrys.getValue());
+    }
+  }
+
+  public void setFavoriteVehicles(TreeMap<String, Vehicle> neo){
+    for(Map.Entry<String, Vehicle> entrys : neo.entrySet()){
+      this.favoriteVehicles.put(entrys.getKey(), entrys.getValue());
+    }
   }
 
   public void printFavoriteDrivers(){
@@ -97,7 +118,10 @@ public class Client extends Person
   }
 
   public Client clone(){
-    return new Client(this);
+    Client c = new Client(this.getLocation(), this.getDestination(), this.getEmail(), this.getPassword(), this.getName(), this.getAddress(), this.getBirthday(), this.getMoneySpent());
+    c.setFavoriteVehicles(this.getFavoriteVehicles());
+    c.setFavoriteDrivers(this.getFavoriteDrivers());
+    return c;
   }
 
 }
