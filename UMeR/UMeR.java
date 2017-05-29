@@ -109,7 +109,6 @@ public class UMeR implements Serializable{
   public void addVehicle(Vehicle neo) throws VehicleExistsException{
     if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Veículo já existente");
     this.vehicles.put(neo.getPlate(), neo);
-    System.out.println(this.vehicles);
   }
 
   public void addDriver(Driver neo) throws UserExistsException{

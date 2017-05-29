@@ -1,11 +1,11 @@
-
+import java.io.Serializable;
 /**
  * Write a description of class Car here.
  *
  * @author jhbb
  * @version 28/04
  */
-public class Car extends Vehicle
+public class Car extends Vehicle implements Serializable
 {
 
   public static int seats = 4;
