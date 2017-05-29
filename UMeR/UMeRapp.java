@@ -33,7 +33,14 @@ public class UMeRapp implements Serializable {
 	}
 
 	public UMeRapp(){
+		File f = new File("data");
 		this.taxiCompany = new UMeR();
+		if(!f.exists()) new Test(this.taxiCompany);
+		try{
+			System.out.println(taxiCompany.getTaxis());
+		} catch(NoTaxisException i){
+			System.out.println("no driver");
+		}
 	}
 
 	private void loadMenus() {
@@ -848,11 +855,14 @@ public class UMeRapp implements Serializable {
 
 	public void StartApp(){
 		try {
-				FileInputStream fis = new FileInputStream("data");
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				this.taxiCompany = (UMeR) ois.readObject();
-				ois.close();
-				System.out.println("Successfully loaded state.");
+				File f = new File("data");
+				if (f.exists()){
+					FileInputStream fis = new FileInputStream("data");
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					this.taxiCompany = (UMeR) ois.readObject();
+					ois.close();
+					System.out.println("Successfully loaded state.");
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

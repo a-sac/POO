@@ -6,7 +6,8 @@ import java.io.Serializable;
  * @author jhbb
  * @version 02/05
  */
-public class UMeR implements Serializable{
+public class UMeR implements Serializable
+{
   private int userType; // 1 is client; 2 is driver
   private int nVehicles;
   private int nDrivers;
@@ -109,7 +110,6 @@ public class UMeR implements Serializable{
   public void addVehicle(Vehicle neo) throws VehicleExistsException{
     if(this.vehicles.containsKey(neo.getPlate())) throw new VehicleExistsException("Veículo já existente");
     this.vehicles.put(neo.getPlate(), neo);
-    System.out.println(this.vehicles);
   }
 
   public void addDriver(Driver neo) throws UserExistsException{
@@ -400,6 +400,6 @@ public class UMeR implements Serializable{
   }
 
   public static void main(String[] args){
-    new UMeRapp().run();
+        new UMeRapp().run();
   }
 }

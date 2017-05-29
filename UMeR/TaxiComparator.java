@@ -9,10 +9,6 @@ import java.io.Serializable;
 public class TaxiComparator implements Comparator<Taxi>, Serializable
 {
     public int compare(Taxi t1, Taxi t2){
-      if(t1.getDriver().getTrustFactor() > t2.getDriver().getTrustFactor())
-        return 1;
-      if(t1.getDriver().getTrustFactor() == t2.getDriver().getTrustFactor())
-        return 0;
-      else return -1;
+      return t1.getVehicle().getPlate().compareTo(t2.getVehicle().getPlate());
     }
 }
