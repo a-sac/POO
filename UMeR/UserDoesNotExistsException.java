@@ -1,11 +1,12 @@
 
+import java.io.Serializable;
 /**
  * Write a description of class UserDoesNotExistsException here.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class UserDoesNotExistsException extends Exception
+public class UserDoesNotExistsException extends Exception implements Serializable
 {
   public UserDoesNotExistsException(){
     super();

@@ -6,7 +6,7 @@ import java.util.*;
  * @author tdaa/jhbb
  * @version 02/05
  */
-public class Driver extends Person implements Serializable{
+public class Driver extends Person{
 
     private double trustFactor;
     private double actualEvaluation;
