@@ -130,15 +130,15 @@ public class Test implements Serializable
     } catch (UserExistsException i){
       System.out.println("Erro loading drivers");
     }
-    
+
     taxiCompany.startDay(driver10);
     taxiCompany.startDay(driver5);
     taxiCompany.startDay(driver4);
     taxiCompany.startDay(driver14);
 
-    taxiCompany.addTaxi(driver10, car4);
+    /*taxiCompany.addTaxi(driver10, car4);
     taxiCompany.addTaxi(driver5, car8);
     taxiCompany.addTaxi(driver4, van2);
-    taxiCompany.addTaxi(driver14, moto1);
+    taxiCompany.addTaxi(driver14, moto1);*/
   }
 }

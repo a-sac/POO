@@ -375,11 +375,13 @@ public class UMeR implements Serializable
         email = read.nextLine();
         while(it.hasNext() && flag==0){
           t = it.next();
-          actual = t.getDriver().getEmail();
-          if(actual.equals(email)==false) System.out.println("E-mail inválido. Tente outra vez!");
-          else flag=1;
+          if(t.getDriver().getEmail().equals(email)) flag=1;
         }
-      }while(email.equals(actual)==false);
+        if(flag==0) {
+          System.out.println("E-mail inválido. Tente outra vez!");
+          it = this.taxis.iterator();
+        }
+      }while(flag==0);
     }
     return email;
   }
@@ -397,10 +399,13 @@ public class UMeR implements Serializable
         while(it.hasNext() && flag==0){
           t = it.next();
           actual = t.getVehicle().getPlate();
-          if(actual.equals(plate)==false) System.out.println("Matrícula inválida. Tente outra vez!");
-          else flag=1;
+          if(actual.equals(plate)) flag=1;
         }
-      }while(plate.equals(actual)==false);
+        if(flag==0){
+          System.out.println("Matrícula inválida. Tente outra vez!");
+          it = this.taxis.iterator();
+        }
+      }while(flag==0);
     }
     return plate;
   }
