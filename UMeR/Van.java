@@ -6,9 +6,8 @@ import java.io.Serializable;
  * @author jhbb
  * @version 28/04
  */
-public class Van extends Vehicle implements Serializable
+public class Van extends Vehicle
 {
-
   public static int seats = 8;
 
   public Van(double speed, double factor, String plate){

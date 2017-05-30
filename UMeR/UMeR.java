@@ -24,19 +24,19 @@ public class UMeR implements Serializable
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
     this.workingDrivers = new TreeMap<String, Driver>();
-    this.taxis = new TreeSet<Taxi>(TaxiComparator);
+    this.taxis = new TreeSet<Taxi>(new TaxiComparator());
     this.nVehicles = this.vehicles.size();
     this.nDrivers = this.drivers.size();
     this.totalProfit = 0;
   }
 
-  Comparator<Taxi> TaxiComparator = new Comparator<Taxi>()
+  /*Comparator<Taxi> TaxiComparator = new Comparator<Taxi>()
   {
       @Override
       public int compare(Taxi t1, Taxi t2){
         return t1.getVehicle().getPlate().compareTo(t2.getVehicle().getPlate());
       }
-  };
+  };*/
 
   public int getUserType(){
     return this.userType;

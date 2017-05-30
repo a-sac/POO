@@ -1,4 +1,6 @@
 import java.util.*;
+
+import java.io.Serializable;
 /**
  * Write a description of class Client here.
  *

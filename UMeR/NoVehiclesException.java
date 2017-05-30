@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 /**
  * Write a description of class NoTaxisException here.
  *

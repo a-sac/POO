@@ -16,8 +16,8 @@ public class UMeRapp implements Serializable {
 
 	private UMeR taxiCompany;
 	private static Admin admin;
-	private static Client client;
-	private static Driver driver;
+	private Client client;
+	private Driver driver;
 	private static int userType;
 	private static Menu homeMenu, clientMenu, driverMenu, signUpMenu, vehicleMenu, callingTaxiMenu, favoriteMenu, signUpVehicleMenu, adminMenu, specificVehicleMenu, driverSubMenu, profitMenu;
 
