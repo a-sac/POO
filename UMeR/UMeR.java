@@ -423,6 +423,16 @@ public class UMeR implements Serializable
     }
   }
 
+  public boolean checkEmail(String email){
+    if(!this.clients.isEmpty()){
+      if(this.clients.containsKey(email)) return true;
+      if(!this.drivers.isEmpty()) return (this.drivers.containsKey(email));
+      return false;
+    }
+    if(!this.drivers.isEmpty()) return this.drivers.containsKey(email);
+    return false;
+  }
+
   public Taxi startDay(Driver d){
     //this.taxis = new TreeSet<Taxi>(new TaxiComparator());
     Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));

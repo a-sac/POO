@@ -263,8 +263,8 @@ public class UMeRapp implements Serializable {
 			System.out.println("Sign up was not successfull");
 		}
 
-		System.out.print("Email: ");
-		email = input.nextLine();
+		//System.out.print("Email: ");
+		email = newEmail();
 
 		System.out.print("Nome: ");
 		nome = input.nextLine();
@@ -310,6 +310,20 @@ public class UMeRapp implements Serializable {
 			System.out.println("utilizador já existe");
 		}
 
+	}
+
+	private String newEmail(){
+		Scanner read = new Scanner(System.in);
+		int flag=0;
+		String email="";
+		do{
+			System.out.println("Email: ");
+			email = read.nextLine();
+			if(this.taxiCompany.checkEmail(email)){ //true if contains
+				System.out.println("Esse email já existe. Tente outra vez: ");
+			} else flag = 1;
+		}while(flag==0);
+		return email;
 	}
 
 	private void login() {

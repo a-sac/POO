@@ -12,7 +12,6 @@ public class Driver extends Person{
     private double actualEvaluation;
     private double kms;
     private double timeExceeded;
-    //private int clientsEvaluation;
     private ArrayList<Double> evaluations;
 
     public Driver(Driver d){

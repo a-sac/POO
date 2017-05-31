@@ -15,4 +15,3 @@ public class NoEvaluationsException extends Exception implements Serializable
     super(message);
   }
 }
-}
