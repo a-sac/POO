@@ -666,7 +666,7 @@ public class UMeRapp implements Serializable {
 		double actual = this.taxiCompany.getTotalProfit();
 		price+=actual;
 		this.taxiCompany.setTotalProfit(price);
-		System.out.println(this.taxiCompany.getTotalProfit());
+		//System.out.println(this.taxiCompany.getTotalProfit());
 	}
 
 	private void showHistory(){
@@ -915,7 +915,7 @@ public class UMeRapp implements Serializable {
 				for(Driver d : taxiCompany.getDrivers().values()){
 					top.add(d);
 				}
-				Iterator<Driver> it = top.descendingIterator();
+				Iterator<Driver> it = top.iterator();
 				Driver d;
 				while(it.hasNext() && i<5){
 					i++;

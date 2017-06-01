@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author jhbb
  * @version 28/04
  */
-public class MotorBike extends Vehicle
+public class MotorBike extends Vehicle implements Serializable
 {
 
   public static int seats = 1;

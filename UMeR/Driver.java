@@ -6,7 +6,7 @@ import java.util.*;
  * @author tdaa/jhbb
  * @version 02/05
  */
-public class Driver extends Person{
+public class Driver extends Person implements Serializable{
 
     private double trustFactor;
     private double actualEvaluation;
@@ -47,6 +47,10 @@ public class Driver extends Person{
 
     public double getTimeExceeded(){
       return this.timeExceeded;
+    }
+
+    public void setFactor(double factor){
+      this.trustFactor = factor;
     }
 
     /*public int getClientsEvaluation(){

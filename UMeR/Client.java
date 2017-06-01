@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author jhbb
  * @version 02/05
  */
-public class Client extends Person
+public class Client extends Person implements Serializable
 {
 
   //instance variables

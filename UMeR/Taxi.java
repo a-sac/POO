@@ -138,12 +138,17 @@ public class Taxi implements Serializable{
     if(this.client!=null){
       double distance = this.location.distanceTo(this.client.getDestination());
       double expectedTime = distance/vehicle.getSpeed();
-      double actualTime = expectedTime * vehicle.getFactor() * driver.getTrustFactor() * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
+      System.out.println("Tempo esperado de viagem: " + (int)(expectedTime * 60) + "min");
+      double actualTime = expectedTime * vehicle.getFactor() * (1/(driver.getTrustFactor())+1) * weather.nextDouble(0.5, 2.5) * (double) trafficCounter/2.0;
       if(actualTime > 1.25*expectedTime){
         price = (this.basePrice * distance)/2;
         this.getDriver().addTimeLost(actualTime - expectedTime);
+        if(this.getDriver().getTrustFactor() != 0) this.getDriver().setFactor(this.getDriver().getTrustFactor() - 1);
       }
-      else price = this.basePrice * distance;
+      else {
+        price = this.basePrice * distance;
+        if(this.getDriver().getTrustFactor()!= 100) this.getDriver().setFactor(this.getDriver().getTrustFactor() + 1);
+      }
       Point2D clientDestination = new Point2D(this.client.getDestination());
       TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);
       this.trip = newTrip;
