@@ -36,11 +36,6 @@ public class UMeRapp implements Serializable {
 		File f = new File("data");
 		this.taxiCompany = new UMeR();
 		if(!f.exists()) new Test(this.taxiCompany);
-		try{
-			System.out.println(taxiCompany.getTaxis());
-		} catch(NoTaxisException i){
-			System.out.println("no driver");
-		}
 	}
 
 	private void loadMenus() {
