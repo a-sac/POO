@@ -87,8 +87,8 @@ public abstract class Person implements Serializable{
         for(TaxiRide tr : elem.getValue()){
           System.out.println(tr.toString());
         }
+        System.out.println("-------------------------");
       }
-      System.out.println("-------------------------");
     }
     else System.out.println("Ainda sem histórico!");
   }

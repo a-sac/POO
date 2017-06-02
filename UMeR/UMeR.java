@@ -43,11 +43,11 @@ public class UMeR implements Serializable
   }
 
   public int getNVehicles(){
-    return this.vehicles.size();
+    return this.nVehicles;
   }
 
   public int getNDrivers(){
-    return this.drivers.size();
+    return this.nDrivers;
   }
 
   public int getDriverCode(){
@@ -351,6 +351,20 @@ public class UMeR implements Serializable
     return isEmpty;
 	}
 
+  public void printDriver(Driver d){
+    System.out.println(this.drivers.get(d.getEmail()).getName());
+    System.out.println(this.drivers.get(d.getEmail()).getEmail());
+    System.out.println(this.drivers.get(d.getEmail()).getAddress());
+    System.out.println(this.drivers.get(d.getEmail()).getBirthday());
+  }
+
+  public void printClient(Client c){
+    System.out.println(this.clients.get(c.getEmail()).getName());
+    System.out.println(this.clients.get(c.getEmail()).getEmail());
+    System.out.println(this.clients.get(c.getEmail()).getAddress());
+    System.out.println(this.clients.get(c.getEmail()).getBirthday());
+  }
+
 
   public boolean printDrivers(){
     boolean bool=false;
@@ -434,12 +448,22 @@ public class UMeR implements Serializable
   }
 
   public Taxi startDay(Driver d){
-    //this.taxis = new TreeSet<Taxi>(new TaxiComparator());
-    Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
+    int flag=0;
+    Iterator<Taxi> it = this.taxis.iterator();
+    Taxi t;
+    while(it.hasNext() && flag==0){
+      t = it.next();
+      if(t.getDriver().getEmail().equals(d.getEmail()))
+        flag = 1;
+    }
+    if(flag==1) {
+      System.out.println("Já iniciou trabalho");
+      return null;
+    }
+    t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
     this.taxis.add(t);
-    System.out.println(this.taxis.size());
     this.vehicles.remove(this.vehicles.firstKey());
-    //this.drivers.remove(d.getEmail());
+    setNDrivers(getNDrivers() - 1);
     try{addWorkingDriver(d);}
     catch(UserExistsException e){System.out.println("Motorista existente");}
     System.out.println("Tenha um bom dia de trabalho " + d.getName());

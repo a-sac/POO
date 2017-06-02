@@ -50,11 +50,13 @@ public class UMeRapp implements Serializable {
 		"Mostrar todos os Táxis",
 		"Pedir Táxi",
 		"Mostrar histórico de viagens",
-		"Obter lista de favoritos"};
+		"Obter lista de favoritos",
+		"Mostrar Perfil"};
 
 		String[] driver = {"Começar trabalho",
 		"Mostrar histórico de viagens",
-		"Terminar trabalho"};
+		"Terminar trabalho",
+		"Mostrar Perfil"};
 
 		String[] signUp = {"Sou cliente",
 		"Sou motorista"};
@@ -168,7 +170,7 @@ public class UMeRapp implements Serializable {
 				case 4: callTaxi(); break;
 				case 5: showHistory(); break;
 				case 6: getFavorites(); break;
-				//case 7: logout(); break;
+				case 7: showClientProfile(this.client.clone()); break;
 			}
 		}while(clientMenu.getOpcao() != 0);
 	}
@@ -180,17 +182,17 @@ public class UMeRapp implements Serializable {
 			switch(driverMenu.getOpcao()) {
 				case 1:	if(flag==0){
 								Taxi t = startWork();
-								runDriverSubMenu(t);
+								if(t!= null) runDriverSubMenu(t);
 								flag = 1;
 								break;
-							}else{
-								System.out.println("Já começou trabalho");
-								break;
-							}
+								}else{
+									System.out.println("Já começou trabalho");
+									break;
+								}
 
 				case 2: showHistory(); break;
 				case 3: endWork(); break;
-				//case 3: logout(); break;
+				case 4: showDriverProfile(this.driver.clone()); break;
 			}
 		} while(driverMenu.getOpcao() != 0);
 	}
@@ -374,6 +376,13 @@ public class UMeRapp implements Serializable {
 		}
 	}
 
+	private void showClientProfile(Client c){
+		this.taxiCompany.printClient(c);
+	}
+
+	private void showDriverProfile(Driver d){
+		this.taxiCompany.printDriver(d);
+	}
 	//for clients
 	private void availableTaxis(){
 		try{
@@ -714,7 +723,9 @@ public class UMeRapp implements Serializable {
 	//for drivers
 	private Taxi startWork(){
 		Taxi t = this.taxiCompany.startDay(this.driver.clone());
-		return t;
+		if(t != null)
+			return t;
+		else return null;
 	}
 
 	private void endWork(){
@@ -818,14 +829,18 @@ public class UMeRapp implements Serializable {
 	}
 
 	private void startTaxiRide(Taxi t){
-		t.rideStart(this.taxiCompany.getTraffic(t));
+		if(t!=null)
+			t.rideStart(this.taxiCompany.getTraffic(t));
 	}
 
 	private void finishTaxiRide(Taxi t){
-		t.rideEnd();
-		this.taxiCompany.updateClient(t.getClient());
-		this.taxiCompany.updateDriver(t.getDriver());
-		t.clientOut();
+		if(t!=null){
+			t.rideEnd();
+			this.taxiCompany.updateClient(t.getClient());
+			this.taxiCompany.updateDriver(t.getDriver());
+			t.clientOut();
+		}
+		else System.out.println("Sem Cliente");
 	}
 
 	private  double lerDouble(String msg) {
