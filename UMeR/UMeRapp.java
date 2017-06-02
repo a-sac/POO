@@ -78,7 +78,8 @@ public class UMeRapp implements Serializable {
 
 		String[] admin ={"Registar viatura",
 		"10 clientes mais gastadores",
-		"5 piores motoristas"};
+		"5 piores motoristas",
+		"Lucro Total"};
 
 		String[] specificVehicle = {"Carro",
 		"Carrinha",
@@ -181,17 +182,19 @@ public class UMeRapp implements Serializable {
 			driverMenu.executaDriverMenu();
 			switch(driverMenu.getOpcao()) {
 				case 1:	if(flag==0){
-								Taxi t = startWork();
-								if(t!= null) runDriverSubMenu(t);
-								flag = 1;
-								break;
+									Taxi t = startWork();
+									if(t!= null) runDriverSubMenu(t);
+									flag = 1;
+									break;
 								}else{
 									System.out.println("Já começou trabalho");
 									break;
 								}
 
 				case 2: showHistory(); break;
-				case 3: endWork(); break;
+				case 3: endWork();
+								flag=0;
+								break;
 				case 4: showDriverProfile(this.driver.clone()); break;
 			}
 		} while(driverMenu.getOpcao() != 0);
@@ -450,46 +453,46 @@ public class UMeRapp implements Serializable {
 
 		this.client.setLocation(x,y);
 		this.client.setDestination(final_x, final_y);
-		int flag=0;
+		int executed=0;
 		do{
 			callingTaxiMenu.executaCallTaxiMenu();
 			switch(callingTaxiMenu.getOpcao()){
-				case 1: if(flag==0){
-									specificVehicle();
-									flag=1;
-								}
+				case 1: specificVehicle();
+								executed=1;
 								break;
-				case 2: if(flag==0){
-									closestTaxi();
-									flag=1;
-								}
+
+				case 2:	closestTaxi();
+								executed=1;
 								break;
-				case 3: if(flag==0){
-									specificDriver();
-									flag=1;
-								}
+
+				case 3:	specificDriver();
+								executed=1;
 								break;
 			}
-		} while(callingTaxiMenu.getOpcao() != 0 && flag==0);
+		}while(callingTaxiMenu.getOpcao() != 0 && executed==0);
 
 	}
 
 	private void specificVehicle(){
 		String answer;
+		int executed = 0;
 		Scanner read = new Scanner(System.in);
 		do{
 			specificVehicleMenu.executaSpecificVehicleMenu();
 			switch(specificVehicleMenu.getOpcao()){
 				case 1:	specificCar();
+								executed = 1;
 								break;
 
 				case 2: specificVan();
+								executed = 1;
 								break;
 
 				case 3: specificMotorBike();
+								executed = 1;
 								break;
 			}
-		}while(specificVehicleMenu.getOpcao()!=0);
+		}while(specificVehicleMenu.getOpcao()!=0 && executed == 0);
 	}
 
 	private void specificCar(){
@@ -576,7 +579,7 @@ public class UMeRapp implements Serializable {
 			else {
 				System.out.println("Taxi a caminho!");
 				makeTrip(this.taxiCompany.getClosestMotorBike(this.client.clone()));
-				System.out.println("Pretende adicionar o Taxi aos favoritos?");
+				System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 				answer = read.nextLine();
 				if(answer.equals("Sim"))
 				addFavorite(t);

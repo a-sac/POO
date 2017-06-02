@@ -90,12 +90,14 @@ public class Client extends Person implements Serializable
   }
 
   public void printFavoriteDrivers(){
+    if(this.favoriteDrivers.isEmpty()) System.out.println("Sem Favoritos!");
     for(String email : this.favoriteDrivers.keySet()){
       System.out.println(email);
     }
   }
 
   public void printFavoriteVehicles(){
+    if(this.favoriteVehicles.isEmpty()) System.out.println("Sem Favoritos!");
     for(String plate : this.favoriteVehicles.keySet()){
       System.out.println(plate);
     }
