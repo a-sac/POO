@@ -24,8 +24,6 @@ public class UMeRapp implements Serializable {
 	public void run() {
 		StartApp();
 		loadMenus();
-		System.out.println(this.taxiCompany.getNDrivers());
-		System.out.println(this.taxiCompany.getNVehicles());
 		try {
 			runHomeMenu();
 		} catch (NullPointerException e){
