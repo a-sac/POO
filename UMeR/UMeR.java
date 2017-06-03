@@ -14,7 +14,6 @@ public class UMeR implements Serializable
   private TreeMap<String, Client> clients;
   private TreeMap<String, Vehicle> vehicles;
   private TreeMap<String, Driver> drivers;
-  //private TreeMap<String, Driver> workingDrivers;
   private TreeSet<Taxi> taxis;
   private static int driverCode = 611;
   private double totalProfit;
@@ -23,20 +22,11 @@ public class UMeR implements Serializable
     this.clients = new TreeMap<String, Client>();
     this.vehicles = new TreeMap<String, Vehicle>();
     this.drivers = new TreeMap<String, Driver>();
-    //this.workingDrivers = new TreeMap<String, Driver>();
     this.taxis = new TreeSet<Taxi>(new TaxiComparator());
     this.nVehicles = this.vehicles.size();
     this.nDrivers = this.drivers.size();
     this.totalProfit = 0;
   }
-
-  /*Comparator<Taxi> TaxiComparator = new Comparator<Taxi>()
-  {
-      @Override
-      public int compare(Taxi t1, Taxi t2){
-        return t1.getVehicle().getPlate().compareTo(t2.getVehicle().getPlate());
-      }
-  };*/
 
   public int getUserType(){
     return this.userType;
@@ -92,17 +82,6 @@ public class UMeR implements Serializable
     }
   }
 
-  /*public Map<String, Driver> getWorkingDrivers() throws NoDriversException{
-    if(this.workingDrivers.isEmpty()) throw new NoDriversException("No drivers in database");
-    else{
-      Map<String, Driver> neo = new TreeMap<String, Driver>();
-      for(Map.Entry<String, Driver> entrys : this.workingDrivers.entrySet()){
-        neo.put(entrys.getKey(), entrys.getValue());
-      }
-      return neo;
-    }
-  }*/
-
   public Map<String, Vehicle> getVehicles() throws NoVehiclesException{
     if(this.vehicles.isEmpty()) throw new NoVehiclesException("No vehicles in database");
     else{
@@ -134,11 +113,6 @@ public class UMeR implements Serializable
     if(this.drivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
     this.drivers.put(neo.getEmail(), neo);
   }
-
-  /*public void addWorkingDriver(Driver neo) throws UserExistsException{
-    if(this.workingDrivers.containsKey(neo.getEmail())) throw new UserExistsException("Motorista já existente");
-    this.workingDrivers.put(neo.getEmail(), neo);
-  }*/
 
   public void addTaxi(Driver d, Vehicle v){
     this.taxis.add(new Taxi(d, v));
@@ -463,9 +437,8 @@ public class UMeR implements Serializable
     t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
     this.taxis.add(t);
     this.vehicles.remove(this.vehicles.firstKey());
+    setNVehicles(getNVehicles() - 1);
     setNDrivers(getNDrivers() - 1);
-    /*try{addWorkingDriver(d);}
-    catch(UserExistsException e){System.out.println("Motorista existente");}*/
     System.out.println("Tenha um bom dia de trabalho " + d.getName());
     return t;
   }
@@ -477,9 +450,9 @@ public class UMeR implements Serializable
     while(it.hasNext() && flag==0){
       t = it.next();
       if(t.getDriver().getEmail().equals(d.getEmail())){
-        //this.drivers.replace(d.getEmail(), d);
-        //this.workingDrivers.remove(d.getEmail());
         this.vehicles.put(t.getVehicle().getPlate(), t.getVehicle().clone());
+        setNDrivers(getNDrivers() + 1);
+        setNVehicles(getNVehicles() + 1);
         this.taxis.remove(t);
         flag=1;
       }

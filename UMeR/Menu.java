@@ -19,28 +19,6 @@ public class Menu implements Serializable{
     private int choiceMenu;
 
     /**
-     * Colours for menu
-     */
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
-    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
-    /**
      * Constructor for objects of class Menu
      */
     public Menu(String[] opcoes) {
@@ -143,103 +121,103 @@ public class Menu implements Serializable{
     /** Apresentar o menu */
     private void showMenu() {
         switch(this.choiceMenu){
-          case 1: System.out.println(ANSI_RED + "\n*** Bem-vindo à UMeR ***" + ANSI_RESET);
+          case 1: System.out.println("\n*** Bem-vindo à UMeR ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 2: System.out.println(ANSI_RED + "\n*** Cliente ***" );
+          case 2: System.out.println("\n*** Cliente ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 3: System.out.println(ANSI_RED + "\n*** Motorista ***" + ANSI_RESET);
+          case 3: System.out.println("\n*** Motorista ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 4: System.out.println(ANSI_RED + "\n*** Trabalho ***" );
+          case 4: System.out.println("\n*** Trabalho ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println( "0 - Sair");
           break;
 
-          case 5: System.out.println(ANSI_RED + "\n*** Registo ***" );
+          case 5: System.out.println("\n*** Registo ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println( "0 - Sair");
           break;
 
-          case 6: System.out.println(ANSI_RED + "\n*** Chamar Taxi ***" );
+          case 6: System.out.println("\n*** Chamar Taxi ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println( "0 - Sair");
           break;
 
-          case 7: System.out.println(ANSI_RED + "\n*** Favoritos ***" );
+          case 7: System.out.println("\n*** Favoritos ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 8: System.out.println(ANSI_RED + "\n*** Registar Veículo ***" );
+          case 8: System.out.println("\n*** Registar Veículo ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 9: System.out.println(ANSI_RED + "\n*** Administrador ***" );
+          case 9: System.out.println("\n*** Administrador ***");
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
-          case 10: System.out.println(ANSI_RED + "\n*** Veículo Específico ***" );
+          case 10: System.out.println( "\n*** Veículo Específico ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - ");
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println( "0 - Sair");
           break;
 
-          case 11: System.out.println(ANSI_RED + "\n*** Total Faturado ***" );
+          case 11: System.out.println("\n*** Total Faturado ***" );
           for (int i=0; i<this.opcoes.size(); i++) {
-              System.out.print(ANSI_WHITE + (i+1) + ANSI_RESET);
-              System.out.print(ANSI_WHITE + " - " + ANSI_RESET);
-              System.out.println(ANSI_WHITE + this.opcoes.get(i) + ANSI_RESET);
+              System.out.print((i+1));
+              System.out.print(" - " );
+              System.out.println(this.opcoes.get(i));
           }
-          System.out.println(ANSI_WHITE + "0 - Sair" + ANSI_RESET);
+          System.out.println("0 - Sair");
           break;
 
         }

@@ -102,12 +102,13 @@ public class Taxi implements Serializable{
     Taxi t = new Taxi(this.getDriver(), this.getVehicle(), this.getLocation(), this.isOccupied(),  this.getBasePrice(), this.getTotalProfit());
     t.setClient(this.getClient().clone());
     t.setTrip(this.getTrip().clone());
-    t.waitingQ = this.getWaitingQ();
+    for(Client c : this.waitingQ)
+      t.waitingQ.add(c.clone());
     return t;
   }
 
   public String toString(){
-    return "-- Taxi (" + this.vehicle.getPlate() + ") conduzido por " + this.driver.toString() + ". com o veículo " + this.vehicle.toString() + ".\nLocalização: " + this.location.toString() + "\n Ocupado? " + this.occupiedToString();
+    return "-- Taxi (" + this.vehicle.getPlate() + ") conduzido por " + this.driver.toString() + ". com o veículo " + this.vehicle.toString() + ".\nLocalização: " + this.location.toString() + "\n Ocupado? " + this.occupiedToString() + ".\n ----------------------------";
   }
 
   public int compareTo(Taxi t){
