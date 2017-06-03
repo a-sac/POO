@@ -38,6 +38,7 @@ public class Taxi implements Serializable{
     this.waitingQ = new LinkedList<Client>();
     this.basePrice = 0.57;
     this.totalProfit = 0.0;
+    this.trip = new TaxiRide();
   }
 
   public Taxi(Driver driver, Vehicle vehicle, Point2D location, boolean occcupied,  double basePrice, double totalProfit){
@@ -48,6 +49,7 @@ public class Taxi implements Serializable{
     this.waitingQ = new LinkedList<Client>();
     this.basePrice = basePrice;
     this.totalProfit = totalProfit;
+    this.trip = new TaxiRide();
   }
 
   public Driver getDriver(){
@@ -98,12 +100,13 @@ public class Taxi implements Serializable{
     this.client = c.clone();
   }
 
+  public void setDriver(Driver d){
+    this.driver = d.clone();
+  }
+
   public Taxi clone(){
-    Taxi t = new Taxi(this.getDriver(), this.getVehicle(), this.getLocation(), this.isOccupied(),  this.getBasePrice(), this.getTotalProfit());
-    t.setClient(this.getClient().clone());
-    t.setTrip(this.getTrip().clone());
-    for(Client c : this.waitingQ)
-      t.waitingQ.add(c.clone());
+    Taxi t = new Taxi(this.getDriver(), this.getVehicle(), this.getLocation(), this.isOccupied(), this.getBasePrice(), this.getTotalProfit());
+    this.waitingQ.forEach(c -> t.waitingQ.add(c.clone()));
     return t;
   }
 
@@ -149,7 +152,7 @@ public class Taxi implements Serializable{
       }
       else {
         price = this.basePrice * distance;
-        if(this.getDriver().getTrustFactor()!= 100) this.getDriver().setFactor(this.getDriver().getTrustFactor() + 1);
+        if(this.getDriver().getTrustFactor() < 100) this.getDriver().setFactor(this.getDriver().getTrustFactor() + 1);
       }
       Point2D clientDestination = new Point2D(this.client.getDestination());
       TaxiRide newTrip = new TaxiRide(this.location.clone(), clientDestination, this.driver.getEmail(), this.client.getEmail(), this.vehicle, distance, expectedTime, actualTime, price);

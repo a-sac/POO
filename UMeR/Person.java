@@ -62,6 +62,13 @@ public abstract class Person implements Serializable{
     return neo;
   }
 
+  public void setHistory(Map<Date, List<TaxiRide>> h){
+    this.history = new TreeMap<Date, List<TaxiRide>>();
+    for(Map.Entry<Date, List<TaxiRide>> entrys : h.entrySet()){
+      this.history.put(entrys.getKey(), entrys.getValue());
+    }
+  }
+
   public void addToHistory(Date d, TaxiRide tr){
     if(this.history.containsKey(d)){
       this.history.get(d).add(tr.clone());

@@ -17,6 +17,8 @@ public class TaxiRide implements Serializable{
   private double actualTime;
   private double price;
 
+  public TaxiRide(){}
+
   public TaxiRide(Point2D start, Point2D destination, String driverEmail, String clientEmail, Vehicle vehicle, double distance, double expectedTime, double actualTime, double price){
     this.start = start;
     this.destination = destination;
@@ -98,8 +100,7 @@ public class TaxiRide implements Serializable{
   }
 
   public TaxiRide clone(){
-    return new TaxiRide(this.getStart(), this.getDestination(), this.getDriverEmail(), this.getClientEmail(), this.getVehicle().clone(), this.getDistance(), this.getExpectedTime(), this.getActualTime(), this.getPrice());
-
+      return new TaxiRide(this.getStart(), this.getDestination(), this.getDriverEmail(), this.getClientEmail(), this.getVehicle(), this.getDistance(), this.getExpectedTime(), this.getActualTime(), this.getPrice());
   }
 
   public String toString(){

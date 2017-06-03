@@ -160,17 +160,21 @@ public class UMeRapp implements Serializable {
 
 	private void runDriverMenu() {
 		int flag=0;
+		Taxi t;
 		do {
 			driverMenu.executaDriverMenu();
 			switch(driverMenu.getOpcao()) {
 				case 1:	if(flag==0){
-									Taxi t = startWork();
-									if(t!= null) runDriverSubMenu(t);
-									flag = 1;
-									break;
-								}else{
-									System.out.println("Já começou trabalho");
-									break;
+									if(this.taxiCompany.findDriver(this.driver.clone()) == null){
+										t = startWork().clone();
+										runDriverSubMenu(t);
+										flag = 1;
+									} else{
+										System.out.println("Já iniciou trabalho");
+										t = this.taxiCompany.findDriver(this.driver.clone());
+										runDriverSubMenu(t);
+									}
+								break;
 								}
 
 				case 2: showHistory(); break;
@@ -497,10 +501,10 @@ public class UMeRapp implements Serializable {
 					t = this.taxiCompany.getClosestFreeCar(this.client.clone());
 					if(t!=null){
 						System.out.println("Taxi a caminho!");
-						makeTrip(t);
+						makeTrip(t.clone());
 						System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 						answer = read.nextLine();
-						if(answer.equals("Sim")) addFavorite(t);
+						if(answer.equals("Sim")) addFavorite(t.clone());
 					}
 				}
 			}
@@ -596,20 +600,20 @@ public class UMeRapp implements Serializable {
 					t = this.taxiCompany.getClosestFreeTaxi(this.client.clone());
 					if(t!=null){
 						System.out.println("Taxi a caminho!");
-						makeTrip(t);
+						makeTrip(t.clone());
 						System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 						answer = read.nextLine();
-						if(answer.equals("Sim")) addFavorite(t);
+						if(answer.equals("Sim")) addFavorite(t.clone());
 					}
 				}
 			}
 			else {
 				System.out.println("Taxi a caminho!");
-				makeTrip(t);
+				makeTrip(t.clone());
 				System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 				answer = read.nextLine();
 				if(answer.equals("Sim"))
-				addFavorite(t);
+				addFavorite(t.clone());
 			}
 		}
 		else System.out.println("Sem taxis");
@@ -639,11 +643,11 @@ public class UMeRapp implements Serializable {
 			}
 			else {
 				System.out.println("Taxi a caminho!");
-				makeTrip(t);
+				makeTrip(t.clone());
 				System.out.println("Pretende adicionar o Taxi aos favoritos? [Sim/Não]");
 				answer = read.nextLine();
 				if(answer.equals("Sim"))
-				addFavorite(t);
+				addFavorite(t.clone());
 			}
 		}catch(InputMismatchException e){System.out.println("E-mail é uma string");}
 		}catch(NoTaxisException e){
@@ -674,6 +678,7 @@ public class UMeRapp implements Serializable {
 		double actual = this.taxiCompany.getTotalProfit();
 		price+=actual;
 		this.taxiCompany.setTotalProfit(price);
+
 	}
 
 	private void showHistory(){

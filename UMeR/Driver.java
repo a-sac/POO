@@ -20,7 +20,6 @@ public class Driver extends Person implements Serializable{
       this.actualEvaluation = d.getActualEvaluation();
       this.kms = d.getKms();
       this.timeExceeded = d.getTimeExceeded();
-      //this.clientsEvaluation = d.getClientsEvaluation();
       this.evaluations = new ArrayList<Double>();
     }
 
@@ -29,7 +28,6 @@ public class Driver extends Person implements Serializable{
       this.trustFactor = factor;
       this.actualEvaluation = evaluation;
       this.kms = kms;
-      //this.clientsEvaluation = 0;
       this.evaluations = new ArrayList<Double>();
     }
 
@@ -53,10 +51,6 @@ public class Driver extends Person implements Serializable{
       this.trustFactor = factor;
     }
 
-    /*public int getClientsEvaluation(){
-      return this.clientsEvaluation;
-    }*/
-
     public ArrayList<Double> getEvaluations() throws NoEvaluationsException{
       if(this.evaluations.isEmpty()) throw new NoEvaluationsException("Sem Avaliações");
       else{
@@ -75,10 +69,6 @@ public class Driver extends Person implements Serializable{
       }
       this.actualEvaluation = count/this.evaluations.size();
     }
-
-    /*public void setClientsEvaluation(int n){
-      this.clientsEvaluation = n;
-    }*/
 
     public void setEvaluationsList(ArrayList<Double> list){
       for(double d : list){
@@ -100,11 +90,8 @@ public class Driver extends Person implements Serializable{
 
     public Driver clone(){
       Driver d = new Driver(this.getEmail(), this.getPassword(), this.getName(), this.getAddress(), this.getBirthday(), this.getTrustFactor(), this.getActualEvaluation(), this.getKms());
-      try{
-        d.setEvaluationsList(this.getEvaluations());
-      }catch(NoEvaluationsException e){
-        System.out.println("Sem avaliações");
-      }
+      this.evaluations.forEach(note -> d.evaluations.add(note));
+      d.setHistory(this.getHistory());
       return d;
     }
 

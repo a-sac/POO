@@ -421,20 +421,20 @@ public class UMeR implements Serializable
     return false;
   }
 
-  public Taxi startDay(Driver d){
-    int flag=0;
+  public Taxi findDriver(Driver d){
+    boolean flag=false;
     Iterator<Taxi> it = this.taxis.iterator();
-    Taxi t;
-    while(it.hasNext() && flag==0){
+    Taxi t=null;
+    while(it.hasNext() && flag==false){
       t = it.next();
       if(t.getDriver().getEmail().equals(d.getEmail()))
-        flag = 1;
+        flag = true;
     }
-    if(flag==1) {
-      System.out.println("Já iniciou trabalho");
-      return null;
-    }
-    t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
+    return t;
+  }
+
+  public Taxi startDay(Driver d){
+    Taxi t = new Taxi(d, this.vehicles.get(this.vehicles.firstKey()));
     this.taxis.add(t);
     this.vehicles.remove(this.vehicles.firstKey());
     setNVehicles(getNVehicles() - 1);

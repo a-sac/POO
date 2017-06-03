@@ -125,6 +125,7 @@ public class Client extends Person implements Serializable
     Client c = new Client(this.getLocation(), this.getDestination(), this.getEmail(), this.getPassword(), this.getName(), this.getAddress(), this.getBirthday(), this.getMoneySpent());
     c.setFavoriteVehicles(this.getFavoriteVehicles());
     c.setFavoriteDrivers(this.getFavoriteDrivers());
+    c.setHistory(this.getHistory());
     return c;
   }
 
