@@ -36,8 +36,8 @@ public class UMeRapp implements Serializable {
 		File f = new File("data");
 		this.taxiCompany = new UMeR();
 		if(!f.exists()) {
-			//new Test(this.taxiCompany);
-			new Test2(this.taxiCompany);
+			new Test(this.taxiCompany);
+			//new Test2(this.taxiCompany);
 		}
 	}
 
@@ -165,6 +165,7 @@ public class UMeRapp implements Serializable {
 			driverMenu.executaDriverMenu();
 			switch(driverMenu.getOpcao()) {
 				case 1:	if(flag==0){
+					System.out.println(this.driver);
 									if(this.taxiCompany.findDriver(this.driver.clone()) == null){
 										t = startWork().clone();
 										runDriverSubMenu(t);
@@ -193,7 +194,8 @@ public class UMeRapp implements Serializable {
 			switch(driverSubMenu.getOpcao()){
 				case 1: getInformationNextClient(); break;
 				case 2: startTaxiRide(t); break;
-				case 3: finishTaxiRide(t); break;
+				case 3: finishTaxiRide(t);
+								break;
 			}
 		}while(driverSubMenu.getOpcao()!=0);
 	}
@@ -441,8 +443,12 @@ public class UMeRapp implements Serializable {
 		System.out.println("Destino: (coordenada y)");
 		final_y = read.nextDouble();
 
+
 		this.client.setLocation(x,y);
 		this.client.setDestination(final_x, final_y);
+	}catch(InputMismatchException e){
+		System.out.println("Coordenadas erradas. Exemplo: 1,0 e 2,0");
+	}
 		int executed=0;
 		do{
 			callingTaxiMenu.executaCallTaxiMenu();
@@ -460,9 +466,7 @@ public class UMeRapp implements Serializable {
 								break;
 			}
 		}while(callingTaxiMenu.getOpcao() != 0 && executed==0);
-	}catch(InputMismatchException e){
-		System.out.println("Coordenadas erradas. Exemplo: 1,0 e 2,0");
-	}
+
 	}
 
 	private void specificVehicle(){
@@ -667,8 +671,7 @@ public class UMeRapp implements Serializable {
 		System.out.println("Deseja atribuir uma nota ao motorista?");
 		answer = read.nextLine();
 		if(answer.equals("Sim")){
-			System.out.println("Avaliação: ");
-			note = read.nextDouble();
+			note = readDouble("Avaliação: (de 0 a 100)");
 			t.getDriver().addEvaluation(note);
 			t.getDriver().updateEvaluation();
 		}
@@ -679,6 +682,21 @@ public class UMeRapp implements Serializable {
 		price+=actual;
 		this.taxiCompany.setTotalProfit(price);
 
+	}
+
+	private  double readDouble(String msg) {
+		Scanner input = new Scanner(System.in);
+		double d = 0.0;
+
+		System.out.print(msg);
+		try {
+			d = input.nextDouble();
+		}
+		catch (InputMismatchException e) {
+			System.out.println("Formato incorreto");
+			d = readDouble(msg);
+		}
+		return d;
 	}
 
 	private void showHistory(){
@@ -742,14 +760,14 @@ public class UMeRapp implements Serializable {
 
 	private void getInformationNextClient(){
 		Taxi t = null;
-		Client c;
+		Client c=null;
 		try{
 			for(Taxi t2: this.taxiCompany.getTaxis()){
 				if(t2.getDriver().getEmail().equals(this.driver.getEmail())) t = t2;
 			}
 
 			c = t.getWaitingQ().poll();
-			if(c!=null){
+			if(c != null){
 				System.out.println(c.getName());
 				System.out.println(c.getLocation());
 				System.out.println(c.getDestination());
@@ -842,7 +860,7 @@ public class UMeRapp implements Serializable {
 	}
 
 	private void finishTaxiRide(Taxi t){
-		if(t!=null){
+		if(t!=null && t.getClient()!=null){
 			t.rideEnd();
 			this.taxiCompany.updateClient(t.getClient());
 			this.taxiCompany.updateDriver(t.getDriver());

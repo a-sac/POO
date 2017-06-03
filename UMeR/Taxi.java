@@ -114,6 +114,11 @@ public class Taxi implements Serializable{
     return "-- Taxi (" + this.vehicle.getPlate() + ") conduzido por " + this.driver.toString() + ". com o veículo " + this.vehicle.toString() + ".\nLocalização: " + this.location.toString() + "\n Ocupado? " + this.occupiedToString() + ".\n ----------------------------";
   }
 
+  public boolean checkQueue(){
+    if(this.waitingQ.poll() == null) return false;
+    else return true;
+  }
+
   public int compareTo(Taxi t){
     if(this.getDriver().getTrustFactor() > t.getDriver().getTrustFactor())
       return 1;
@@ -169,11 +174,8 @@ public class Taxi implements Serializable{
   }
 
   public void rideEnd(){
-    if(this.client!=null){
       this.chargeClient(this.client, this.trip.getPrice());
       this.clientLeaves();
-    }
-    else System.out.println("Sem Cliente");
   }
 
   public void chargeClient(Client c, double price){

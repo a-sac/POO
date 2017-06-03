@@ -430,7 +430,8 @@ public class UMeR implements Serializable
       if(t.getDriver().getEmail().equals(d.getEmail()))
         flag = true;
     }
-    return t;
+    if(flag==true) return t;
+    return null;
   }
 
   public Taxi startDay(Driver d){
@@ -450,7 +451,7 @@ public class UMeR implements Serializable
     while(it.hasNext() && flag==0){
       t = it.next();
       if(t.getDriver().getEmail().equals(d.getEmail())){
-        this.vehicles.put(t.getVehicle().getPlate(), t.getVehicle().clone());
+        this.vehicles.put(t.getVehicle().getPlate(), t.getVehicle());
         setNDrivers(getNDrivers() + 1);
         setNVehicles(getNVehicles() + 1);
         this.taxis.remove(t);
