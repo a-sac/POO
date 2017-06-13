@@ -36,8 +36,8 @@ public class UMeRapp implements Serializable {
 		File f = new File("data");
 		this.taxiCompany = new UMeR();
 		if(!f.exists()) {
-			new Test(this.taxiCompany);
-			//new Test2(this.taxiCompany);
+			//new Test(this.taxiCompany);
+			new Test2(this.taxiCompany);
 		}
 	}
 

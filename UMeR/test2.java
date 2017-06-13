@@ -8,9 +8,9 @@ public class Test2 implements Serializable
     taxiCompany.setNVehicles(3);
 
     Driver driver1, driver2, driver3;
-    driver1 = new Driver("driver13@email.com", "password1", "Esteves", "Rua do Calcanhar de Aquiles nº1024", "22-07-83", 70, 99, 86745);
-    driver2 = new Driver("driver14@email.com", "password2", "Messias Pulga", "Rua do Nestor nº98", "27-02-87", 78, 100, 12333);
-    driver3 = new Driver("driver15@email.com", "password3", "Tiago Atletico", "Rua do Jesus nº89", "26-03-88", 62, 56, 74764);
+    driver1 = new Driver("driver1@email.com", "password1", "Esteves", "Rua do Calcanhar de Aquiles nº1024", "22-07-83", 70, 99, 86745);
+    driver2 = new Driver("driver2@email.com", "password2", "Messias Pulga", "Rua do Nestor nº98", "27-02-87", 78, 100, 12333);
+    driver3 = new Driver("driver3@email.com", "password3", "Tiago Atletico", "Rua do Jesus nº89", "26-03-88", 62, 56, 74764);
 
     Client client1, client2, client3;
     client1 = new Client("client1@email.com", "pass1", "Bruno Marrocos", "Rua Casillas nº21", "01-02-91", 400);
